@@ -9,16 +9,14 @@
     "lint": "next lint"
   },
   "dependencies": {
-   
     "@emotion/cache": "latest",
     "@emotion/react": "latest",
     "@emotion/server": "latest",
     "@emotion/styled": "latest",
-
     "@mui/icons-material": "^5.8.4",
     "@mui/material": "^5.9.0",
-    "prop-types": "latest",
     "next": "12.2.2",
+    "prop-types": "latest",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "recharts": "^2.1.12"

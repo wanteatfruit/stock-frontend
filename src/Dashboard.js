@@ -38,23 +38,23 @@ function Copyright(props) {
 
 const drawerWidth = 240;
 
-const AppBar = styled(MuiAppBar, {
-    shouldForwardProp: (prop) => prop !== 'open',
-})(({ theme, open }) => ({
-    zIndex: theme.zIndex.drawer + 1,
-    transition: theme.transitions.create(['width', 'margin'], {
-        easing: theme.transitions.easing.sharp,
-        duration: theme.transitions.duration.leavingScreen,
-    }),
-    ...(open && {
-        marginLeft: drawerWidth,
-        width: `calc(100% - ${drawerWidth}px)`,
-        transition: theme.transitions.create(['width', 'margin'], {
-            easing: theme.transitions.easing.sharp,
-            duration: theme.transitions.duration.enteringScreen,
-        }),
-    }),
-}));
+// const AppBar = styled(MuiAppBar, {
+//     shouldForwardProp: (prop) => prop !== 'open',
+// })(({ theme, open }) => ({
+//     zIndex: theme.zIndex.drawer + 1,
+//     transition: theme.transitions.create(['width', 'margin'], {
+//         easing: theme.transitions.easing.sharp,
+//         duration: theme.transitions.duration.leavingScreen,
+//     }),
+//     ...(open && {
+//         marginLeft: drawerWidth,
+//         width: `calc(100% - ${drawerWidth}px)`,
+//         transition: theme.transitions.create(['width', 'margin'], {
+//             easing: theme.transitions.easing.sharp,
+//             duration: theme.transitions.duration.enteringScreen,
+//         }),
+//     }),
+// }));
 
 const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' })(
     ({ theme, open }) => ({
@@ -123,10 +123,10 @@ function DashboardContent() {
     };
 
     return (
-        <ThemeProvider theme={mdTheme}>
+        // <ThemeProvider theme={mdTheme}>
             <Box sx={{ display: 'flex' }}>
                 <CssBaseline />
-                <AppBar color="transparent" position="absolute" open={open}>
+                <MuiAppBar color="transparent" position="absolute" open={open}>
                     <Toolbar
                         sx={{
                             pr: '12px', // keep right padding when drawer closed
@@ -153,14 +153,9 @@ function DashboardContent() {
                         >
                             Dashboard
                         </Typography>
-                        <IconButton color="secondary">
-                            <Badge badgeContent={4} color="secondary">
-                                <NotificationsIcon />
-                            </Badge>
-                        </IconButton>
                     </Toolbar>
-                </AppBar>
-                <Drawer variant="permanent" open={open}>
+                </MuiAppBar>
+                <MuiDrawer variant="permanent" open={open}>
                     <Toolbar
                         sx={{
                             display: 'flex',
@@ -179,7 +174,7 @@ function DashboardContent() {
                         <Divider sx={{ my: 1 }} />
                         {/* {secondaryListItems} */}
                     </List>
-                </Drawer>
+                </MuiDrawer>
                 <Box
                     component="main"
                     sx={{
@@ -195,21 +190,20 @@ function DashboardContent() {
                     <Toolbar />
                     <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
                         <Grid container spacing={3}>
-                            {/* Chart */}
-                            <Grid item xs={12} md={8} lg={9}>
+                            <Grid item xs='auto' md={12} lg={12}>
                                 <Paper
                                     sx={{
                                         p: 2,
                                         display: 'flex',
                                         flexDirection: 'column',
-                                        height: 240,
+                                        height:300
                                     }}
                                 >
                                     <Chart />
                                 </Paper>
                             </Grid>
                             {/* Recent Deposits */}
-                            <Grid item xs={12} md={4} lg={3}>
+                            {/* <Grid item xs={12} md={4} lg={3}>
                                 <Paper
                                     sx={{
                                         p: 2,
@@ -220,19 +214,41 @@ function DashboardContent() {
                                 >
                                     
                                 </Paper>
-                            </Grid>
+                            </Grid> */}
                             {/* Recent Orders */}
-                            <Grid item xs={12}>
-                                <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
-                                    
-                                </Paper>
-                            </Grid>
+                        <Grid item xs={12} md={4} lg={3}>
+                            <Paper sx={{
+                                p: 2,
+                                display: 'flex',
+                                flexDirection: 'column',
+                                
+                            }}>
+                            </Paper>
+                        </Grid>
+                        <Grid item xs={12} lg={6}>
+                            <Paper sx={{
+                                p: 2,
+                                display: 'flex',
+                                flexDirection: 'column',
+
+                            }}>
+                            </Paper>
+                        </Grid>
+                        <Grid item xs={12} lg={3}>
+                            <Paper sx={{
+                                p: 2,
+                                display: 'flex',
+                                flexDirection: 'column',
+
+                            }}>
+                            </Paper>
+                        </Grid>
                         </Grid>
                         <Copyright sx={{ pt: 4 }} />
                     </Container>
                 </Box>
             </Box>
-        </ThemeProvider>
+        // </ThemeProvider>
     );
 }
 

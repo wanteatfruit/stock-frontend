@@ -1,5 +1,5 @@
 import { CheckBox } from '@mui/icons-material'
-import { Button, createTheme, ThemeProvider } from '@mui/material'
+import { Button, createTheme, SpeedDial, ThemeProvider } from '@mui/material'
 import { Container } from '@mui/system'
 import Head from 'next/head'
 import Image from 'next/image'
@@ -7,6 +7,7 @@ import Image from 'next/image'
 import { theme } from '../src/theme'
 import dynamic from 'next/dynamic'
 import { Suspense } from 'react'
+import SpeedDialComp from '../src/SpeedDial'
 
 const DynamicHeader = dynamic(() => import('../src/Dashboard'), {
   suspense: true,
@@ -16,7 +17,9 @@ const DynamicHeader = dynamic(() => import('../src/Dashboard'), {
 export default function Home() {
   return (
     <Suspense fallback={'Loading...'}>
+      <SpeedDialComp />
       <DynamicHeader />
+
     </Suspense>
   )
 }
