@@ -101,13 +101,6 @@ export default function SearchAppBar() {
 
                 </Autocomplete>
                 <Search>
-
-
-
-                        {/* <StyledInputBase
-                            placeholder="Search…"
-                            inputProps={{ 'aria-label': 'search' }}
-                        /> */}
                     </Search>
                 </Toolbar>
             </AppBar>

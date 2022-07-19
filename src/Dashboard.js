@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { styled, createTheme, ThemeProvider } from '@mui/material/styles';
+import { styled, createTheme, ThemeProvider, alpha } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import MuiDrawer from '@mui/material/Drawer';
 import Box from '@mui/material/Box';
@@ -17,14 +17,10 @@ import Link from '@mui/material/Link';
 import MenuIcon from '@mui/icons-material/Menu';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import NotificationsIcon from '@mui/icons-material/Notifications';
-import ListItem from '@mui/material';
-import ListItemButton from '@mui/material';
-import ListItemText from '@mui/material';
-
 // import { mainListItems, secondaryListItems } from './listItems';
 import Chart from './Chart.js';
 import theme from './theme.js';
-import { Button, ButtonGroup } from '@mui/material';
+import { AppBar, Autocomplete, Button, ButtonGroup, Icon, ListItem, ListItemText, TextField } from '@mui/material';
 import SearchAppBar from './TopAppBar.js';
 // import Deposits from './Deposits';
 // import Orders from './Orders';
@@ -61,6 +57,20 @@ const drawerWidth = 240;
 //         }),
 //     }),
 // }));
+const Search = styled('div')(({ theme }) => ({
+    position: 'relative',
+    borderRadius: theme.shape.borderRadius,
+    backgroundColor: alpha(theme.palette.common.white, 0.15),
+    '&:hover': {
+        backgroundColor: alpha(theme.palette.common.white, 0.25),
+    },
+    marginLeft: 0,
+    width: '100%',
+    [theme.breakpoints.up('sm')]: {
+        marginLeft: theme.spacing(1),
+        width: 'auto',
+    },
+}));
 
 const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' })(
     ({ theme, open }) => ({
@@ -129,12 +139,60 @@ function DashboardContent() {
         setOpen(!open);
     };
 
+    const handleClose = () => {
+        setOpen(false)
+    }
+
+    const handleOpen = () => {
+        setOpen(true)
+    }
+
     return (
         // <ThemeProvider theme={mdTheme}>
-            <Box sx={{ display: 'flex' }}>
+        <Box sx={{ display: 'flex' }}>
             <CssBaseline />
-            <SearchAppBar />
-                {/* <MuiAppBar color="transparent" position="absolute" open={open}>
+
+            <AppBar position='absolute' color='transparent'>
+                <Toolbar>
+                    <IconButton
+                        size='large'
+                        edge='start'
+                        color='inherit'
+                        aria-label='open drawer'
+                        sx={{ mr: 2 }}
+                        onClick={handleOpen}
+                    >
+                        <MenuIcon />
+                    </IconButton>
+                    <Typography
+                        variant="h6"
+                        noWrap
+                        component="div"
+                        sx={{ flexGrow: 1, display: { xs: 'none', sm: 'block' } }}
+                    >
+                        Stocks Dashboard
+                    </Typography>
+                    <Autocomplete
+                        options={stocks}
+                        size='small'
+                        renderInput={(params) => <TextField {...params}
+                            label="Stocks"
+                            sx={{ width: 300, color: 'inherit' }}
+                            variant='filled' />}
+                        sx={{
+                            padding: theme.spacing(1, 1, 1, 0),
+                            [theme.breakpoints.up('sm')]: {
+                                marginLeft: theme.spacing(1),
+                                width: 'auto',
+                            },
+                        }}
+                    >
+
+                    </Autocomplete>
+                    <Search />
+                </Toolbar>
+            </AppBar>
+            {/* <MuiAppBar color="transparent" position="absolute" open={open}>
                     <Toolbar
                         sx={{
                             pr: '12px', // keep right padding when drawer closed
@@ -144,11 +202,12 @@ function DashboardContent() {
                             edge="start"
                             color="inherit"
                             aria-label="open drawer"
-                            onClick={toggleDrawer}
+                            onClick={handleOpen}
                             sx={{
                                 marginRight: '36px',
-                                ...(open && { display: 'none' }),
+                                
                             }}
+                            
                         >
                             <MenuIcon />
                         </IconButton>
@@ -163,67 +222,59 @@ function DashboardContent() {
                         </Typography>
                     </Toolbar>
                 </MuiAppBar> */}
-                <Drawer variant='temporary' open={open} anchor='left'>
-                    <Toolbar
-                        sx={{
-                            display: 'flex',
-                            alignItems: 'center',
-                            justifyContent: 'flex-end',
-                            px: [1],
-                        }}
-                    >
-                        <IconButton onClick={toggleDrawer}>
-                            <ChevronLeftIcon />
-                        </IconButton>
-                    </Toolbar>
-                    <Divider />
-                <List component="nav">
-                    <ListItem disablePadding>
-                        <ListItemButton>
-                            <ListItemText primary="Inbox" />
-                        </ListItemButton>
-                    </ListItem>
-                    <ListItem disablePadding>
-                        <ListItemButton>
-                            <ListItemText primary="Drafts" />
-                        </ListItemButton>
-                    </ListItem>
-
-                        {/* {mainListItems} */}
-                        <Divider sx={{ my: 1 }} />
-                        {/* {secondaryListItems} */}
-                    </List>
-                </Drawer>
-                <Box
-                    component="main"
+            <MuiDrawer variant='temporary' open={open} onClose ={handleClose}>
+                <Toolbar
                     sx={{
-                        backgroundColor: (theme) =>
-                            theme.palette.mode === 'light'
-                                ? theme.palette.grey[100]
-                                : theme.palette.grey[900],
-                        flexGrow: 1,
-                        height: '100vh',
-                        overflow: 'auto',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'flex-end',
+                        px: [1],
                     }}
                 >
-                    <Toolbar />
-                    <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
-                        <Grid container spacing={3}>
+                    <IconButton onClick={handleClose}>
+                        <ChevronLeftIcon />
+                    </IconButton>
+                </Toolbar>
+                <Divider />
+                <List component="nav">
+                    <ListItem>
+                        <ListItemText primary="placeHolder"></ListItemText>
+                    </ListItem>
+                    {/* {mainListItems} */}
+                    <Divider sx={{ my: 1 }} />
+                    {/* {secondaryListItems} */}
+                </List>
+            </MuiDrawer>
+            <Box
+                component="main"
+                sx={{
+                    backgroundColor: (theme) =>
+                        theme.palette.mode === 'light'
+                            ? theme.palette.grey[100]
+                            : theme.palette.grey[900],
+                    flexGrow: 1,
+                    height: '100vh',
+                    overflow: 'auto',
+                }}
+            >
+                <Toolbar />
+                <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
+                    <Grid container spacing={3}>
                         <Grid item xs={12} lg={12}>
-                                <Paper
-                                    sx={{
-                                        p: 2,
-                                        display: 'flex',
-                                        flexDirection: 'column',
-                                        height:300
-                                    }}
-                                >   
-                                    
-                                    <Chart />
-                                </Paper>
-                            </Grid>
-                            {/* Recent Deposits */}
-                            {/* <Grid item xs={12} md={4} lg={3}>
+                            <Paper
+                                sx={{
+                                    p: 2,
+                                    display: 'flex',
+                                    flexDirection: 'column',
+                                    height: 300
+                                }}
+                            >
+
+                                <Chart />
+                            </Paper>
+                        </Grid>
+                        {/* Recent Deposits */}
+                        {/* <Grid item xs={12} md={4} lg={3}>
                                 <Paper
                                     sx={{
                                         p: 2,
@@ -235,13 +286,13 @@ function DashboardContent() {
                                     
                                 </Paper>
                             </Grid> */}
-                            {/* Recent Orders */}
+                        {/* Recent Orders */}
                         <Grid item xs={12} md={4} lg={3}>
                             <Paper sx={{
                                 p: 2,
                                 display: 'flex',
                                 flexDirection: 'column',
-                                
+
                             }}>
                             </Paper>
                         </Grid>
@@ -263,14 +314,16 @@ function DashboardContent() {
                             }}>
                             </Paper>
                         </Grid>
-                        </Grid>
-                        <Copyright sx={{ pt: 4 }} />
-                    </Container>
-                </Box>
+                    </Grid>
+                    <Copyright sx={{ pt: 4 }} />
+                </Container>
             </Box>
+        </Box>
         // </ThemeProvider>
     );
 }
+const stocks = [{ label: 'AAPL', market: 'US' },
+{ label: '000123', market: 'CN' }]
 
 export default function Dashboard() {
     return <DashboardContent />;
