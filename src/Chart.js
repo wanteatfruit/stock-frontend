@@ -5,6 +5,9 @@ import Title from './Title';
 import RowRadioButtonsGroup from './TimeRadioButtons'
 import { Button, ButtonGroup } from '@mui/material';
 import TimeToggleButtons from './TimeToggleButtons';
+import Stack from '@mui/material/Stack';
+import ToggleButton from '@mui/material/ToggleButton';
+import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 
 // Generate Sales Data
 function createData(time, amount) {
@@ -20,24 +23,80 @@ const data = [
     createData('15:00', 2000),
     createData('18:00', 2400),
     createData('21:00', 2400),
-    createData('24:00', undefined),
+    createData('24:00', 1200),
 ];
+
+const oneMonthData = [
+    createData('1', 0),
+    createData('2', 1),
+    createData('3', 3600),
+    createData('4', 400)
+]
+
+const oneYearData = [
+    createData('1001', 1),
+    createData('1002', 2)
+]
 
 const clicked = () =>{alert('clicked')}
 
+function changeData(range) {
+    switch (range) {
+        case 'oneWeek':
+            return data
+        case 'oneMonth':
+            return oneMonthData
+        case 'oneYear':
+            return oneYearData
+    }
+}
 
 
 export default function Chart() {
     const theme = useTheme();
+    const [range, setRange] = React.useState('oneWeek');
 
+    const handleRange = (event, newRange) => {
+        if (newRange !== null) {
+            setRange(newRange)
+        }
+    }
+
+    // const [timeRange, setTimeRange] = React.useState('oneWeek')
+    // const changeMonthData = () => {
+    //     setTimeRange('oneMonth')
+    // }
     return (
         <React.Fragment>
             {/* <Title>Today</Title> */}
             {/* <RowRadioButtonsGroup /> */}
-            <TimeToggleButtons />
+            {/* <TimeToggleButtons /> */}
+            <Stack direction="row" spacing={4}>
+                <ToggleButtonGroup
+                    value={range}
+                    exclusive
+                    onChange={handleRange}
+                    aria-label="time range"
+                    color='primary'
+                    sx={{ display: 'flex', p: 1 }}
+                >
+                    <ToggleButton value="fiveYears" aria-label="left aligned" sx={{ height: 30 }}>
+                        5Y
+                    </ToggleButton>
+                    <ToggleButton value="oneYear" aria-label="centered" sx={{ height: 30 }}>
+                        1Y
+                    </ToggleButton>
+                    <ToggleButton value="oneMonth" aria-label="right aligned" sx={{ height: 30 }}>
+                        1M
+                    </ToggleButton>
+                    <ToggleButton value="oneWeek" aria-label="right aligned" sx={{ height: 30 }}>
+                        1W
+                    </ToggleButton>
+                </ToggleButtonGroup>
+            </Stack>
             <ResponsiveContainer>
                 <LineChart
-                    data={data}
+                    data={changeData(range)}
                     margin={{
                         top: 16,
                         right: 16,

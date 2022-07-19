@@ -76,10 +76,10 @@ export default function SearchAppBar() {
                     <Typography
                         variant="h6"
                         noWrap
-                        component="div"
+                    component="div"
                         sx={{ flexGrow: 1, display: { xs: 'none', sm: 'block' } }}
                     >
-                        MUI
+                        Stocks Dashboard
                 </Typography>
                 <Autocomplete
                     options={stocks}

@@ -17,6 +17,10 @@ import Link from '@mui/material/Link';
 import MenuIcon from '@mui/icons-material/Menu';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import NotificationsIcon from '@mui/icons-material/Notifications';
+import ListItem from '@mui/material';
+import ListItemButton from '@mui/material';
+import ListItemText from '@mui/material';
+
 // import { mainListItems, secondaryListItems } from './listItems';
 import Chart from './Chart.js';
 import theme from './theme.js';
@@ -159,7 +163,7 @@ function DashboardContent() {
                         </Typography>
                     </Toolbar>
                 </MuiAppBar> */}
-                <MuiDrawer variant="permanent" open={open}>
+                <Drawer variant='temporary' open={open} anchor='left'>
                     <Toolbar
                         sx={{
                             display: 'flex',
@@ -173,12 +177,23 @@ function DashboardContent() {
                         </IconButton>
                     </Toolbar>
                     <Divider />
-                    <List component="nav">
+                <List component="nav">
+                    <ListItem disablePadding>
+                        <ListItemButton>
+                            <ListItemText primary="Inbox" />
+                        </ListItemButton>
+                    </ListItem>
+                    <ListItem disablePadding>
+                        <ListItemButton>
+                            <ListItemText primary="Drafts" />
+                        </ListItemButton>
+                    </ListItem>
+
                         {/* {mainListItems} */}
                         <Divider sx={{ my: 1 }} />
                         {/* {secondaryListItems} */}
                     </List>
-                </MuiDrawer>
+                </Drawer>
                 <Box
                     component="main"
                     sx={{

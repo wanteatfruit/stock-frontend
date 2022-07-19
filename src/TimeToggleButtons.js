@@ -40,7 +40,6 @@ export default function TimeToggleButtons() {
                     1W
                 </ToggleButton>
             </ToggleButtonGroup>
-
         </Stack>
     );
 }
