@@ -2,6 +2,9 @@ import * as React from 'react';
 import { useTheme } from '@mui/material/styles';
 import { LineChart, Line, XAxis, YAxis, Label, ResponsiveContainer, Tooltip, Brush } from 'recharts';
 import Title from './Title';
+import RowRadioButtonsGroup from './TimeRadioButtons'
+import { Button, ButtonGroup } from '@mui/material';
+import TimeToggleButtons from './TimeToggleButtons';
 
 // Generate Sales Data
 function createData(time, amount) {
@@ -20,12 +23,18 @@ const data = [
     createData('24:00', undefined),
 ];
 
+const clicked = () =>{alert('clicked')}
+
+
+
 export default function Chart() {
     const theme = useTheme();
 
     return (
         <React.Fragment>
-            <Title>Today</Title>
+            {/* <Title>Today</Title> */}
+            {/* <RowRadioButtonsGroup /> */}
+            <TimeToggleButtons />
             <ResponsiveContainer>
                 <LineChart
                     data={data}

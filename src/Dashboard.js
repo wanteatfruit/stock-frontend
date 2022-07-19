@@ -20,6 +20,7 @@ import NotificationsIcon from '@mui/icons-material/Notifications';
 // import { mainListItems, secondaryListItems } from './listItems';
 import Chart from './Chart.js';
 import theme from './theme.js';
+import { Button, ButtonGroup } from '@mui/material';
 // import Deposits from './Deposits';
 // import Orders from './Orders';
 
@@ -81,6 +82,7 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
         },
     }),
 );
+
 
 const mdTheme = createTheme({
     palette: {
@@ -190,7 +192,7 @@ function DashboardContent() {
                     <Toolbar />
                     <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
                         <Grid container spacing={3}>
-                            <Grid item xs='auto' md={12} lg={12}>
+                        <Grid item xs={12} lg={12}>
                                 <Paper
                                     sx={{
                                         p: 2,
@@ -198,7 +200,8 @@ function DashboardContent() {
                                         flexDirection: 'column',
                                         height:300
                                     }}
-                                >
+                                >   
+                                    
                                     <Chart />
                                 </Paper>
                             </Grid>
