@@ -21,6 +21,7 @@ import NotificationsIcon from '@mui/icons-material/Notifications';
 import Chart from './Chart.js';
 import theme from './theme.js';
 import { Button, ButtonGroup } from '@mui/material';
+import SearchAppBar from './TopAppBar.js';
 // import Deposits from './Deposits';
 // import Orders from './Orders';
 
@@ -127,8 +128,9 @@ function DashboardContent() {
     return (
         // <ThemeProvider theme={mdTheme}>
             <Box sx={{ display: 'flex' }}>
-                <CssBaseline />
-                <MuiAppBar color="transparent" position="absolute" open={open}>
+            <CssBaseline />
+            <SearchAppBar />
+                {/* <MuiAppBar color="transparent" position="absolute" open={open}>
                     <Toolbar
                         sx={{
                             pr: '12px', // keep right padding when drawer closed
@@ -156,7 +158,7 @@ function DashboardContent() {
                             Dashboard
                         </Typography>
                     </Toolbar>
-                </MuiAppBar>
+                </MuiAppBar> */}
                 <MuiDrawer variant="permanent" open={open}>
                     <Toolbar
                         sx={{
