@@ -1,9 +1,9 @@
 import * as React from 'react';
+import PropTypes from 'prop-types';
 import { styled, createTheme, ThemeProvider, alpha } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import MuiDrawer from '@mui/material/Drawer';
 import Box from '@mui/material/Box';
-import MuiAppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import List from '@mui/material/List';
 import Typography from '@mui/material/Typography';
@@ -20,13 +20,13 @@ import NotificationsIcon from '@mui/icons-material/Notifications';
 // import { mainListItems, secondaryListItems } from './listItems';
 import Chart from './Chart.js';
 // import theme from './theme.js';
-import { AppBar, Autocomplete, Button, ButtonGroup, Icon, ListItem, ListItemText, TextField } from '@mui/material';
+import { AppBar, Autocomplete, Button, ButtonGroup, Icon, ListItem, ListItemText, Tabs, TextField } from '@mui/material';
 import SearchAppBar from './TopAppBar.js';
 // import Deposits from './Deposits';
 // import Orders from './Orders';
 import parse from 'autosuggest-highlight/parse';
 import match from 'autosuggest-highlight/match';
-
+import Tab from '@mui/material/Tab';
 function Copyright(props) {
     return (
         <Typography variant="body2" color="text.secondary" align="center" {...props}>
@@ -121,6 +121,40 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
 );
 
 
+// tabs
+function TabPanel(props) {
+    const { children, value, index, ...other } = props;
+
+    return (
+        <div
+            role="tabpanel"
+            hidden={value !== index}
+            id={`simple-tabpanel-${index}`}
+            aria-labelledby={`simple-tab-${index}`}
+            {...other}
+        >
+            {value === index && (
+                <Box sx={{ p: 3 }}>
+                    <Typography>{children}</Typography>
+                </Box>
+            )}
+        </div>
+    );
+}
+
+TabPanel.propTypes = {
+    children: PropTypes.node,
+    index: PropTypes.number.isRequired,
+    value: PropTypes.number.isRequired,
+};
+
+function a11yProps(index) {
+    return {
+        id: `simple-tab-${index}`,
+        'aria-controls': `simple-tabpanel-${index}`,
+    };
+}
+
 
 
 function DashboardContent() {
@@ -146,12 +180,18 @@ function DashboardContent() {
     // show chart according to newStock, need pass to chart
     
 
+    // states of tab
+    const [tabValue, setTabValue] = React.useState('1')
+    const handleTabChange = (event, newValue) => {
+        setTabValue(newValue)
+    }
+
     return (
         <ThemeProvider theme={dashTheme}>
         <Box sx={{ display: 'flex' }}>
             <CssBaseline />
 
-            <AppBar position='fixed' color='inherit'>
+            <AppBar position='fixed' color='inherit' >
                 <Toolbar>
                     <IconButton
                         size='large'
@@ -213,38 +253,31 @@ function DashboardContent() {
                     >
 
                     </Autocomplete>
-                </Toolbar>
-            </AppBar>
-            {/* <MuiAppBar color="transparent" position="absolute" open={open}>
-                    <Toolbar
-                        sx={{
-                            pr: '12px', // keep right padding when drawer closed
-                        }}
-                    >
-                        <IconButton
-                            edge="start"
-                            color="inherit"
-                            aria-label="open drawer"
-                            onClick={handleOpen}
-                            sx={{
-                                marginRight: '36px',
-                                
-                            }}
-                            
-                        >
-                            <MenuIcon />
-                        </IconButton>
-                        <Typography
-                            component="h1"
-                            variant="h6"
-                            color="inherit"
-                            noWrap
-                            sx={{ flexGrow: 1 }}
-                        >
-                            Dashboard
-                        </Typography>
                     </Toolbar>
-                </MuiAppBar> */}
+
+                </AppBar>
+                <AppBar position='fixed' color='transparent' sx={{ display: 'flex', mt: '65px', maxHeight:'30px' }}>
+                    <Toolbar sx={{}}>
+                            <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+
+                        <Tabs value={tabValue} onChange={handleTabChange}>
+                            <Tab label="Item One" {...a11yProps(0)} />
+                            <Tab label="Item Two" {...a11yProps(1)} />
+                            <Tab label="Item Three" {...a11yProps(2)} />
+                                </Tabs>
+                                </Box>
+                        <TabPanel value={tabValue} index={0}>
+                            Item One
+                        </TabPanel>
+                        <TabPanel value={tabValue} index={1}>
+                            Item Two
+                        </TabPanel>
+                        <TabPanel value={tabValue} index={2}>
+                            Item Three
+                            </TabPanel>
+                    </Toolbar>
+                </AppBar>
+
             <MuiDrawer variant='temporary' open={open} onClose ={handleClose}>
                 <Toolbar
                     sx={{
@@ -271,17 +304,13 @@ function DashboardContent() {
             <Box
                 component="main"
                 sx={{
-                    backgroundColor: (theme) =>
-                        theme.palette.mode === 'light'
-                            ? theme.palette.grey[100]
-                            : theme.palette.grey[900],
                     flexGrow: 1,
                     height: '100vh',
                     overflow: 'auto',
                 }}
             >
                 <Toolbar />
-                <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
+                <Container maxWidth="lg" sx={{ mt: 10, mb: 4 }}>
                     <Grid container spacing={3}>
                         <Grid item xs={12} lg={12}>
                             <Paper
