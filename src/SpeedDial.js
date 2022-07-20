@@ -12,6 +12,20 @@ import { createTheme, ThemeProvider } from '@mui/system';
 
 const actions = [{ icon: <FileCopyIcon />, name: 'copy' }]
 
+const speedDialTheme = createTheme({
+    palette: {
+        type: 'light',
+        primary: {
+            main: '#ff1744',
+        },
+        secondary: {
+            main: '#ff1744',
+        },
+        info: {
+            main: '#2196f3',
+        },
+    },
+})
 
 
 export default function SpeedDialComp() {
@@ -20,19 +34,20 @@ export default function SpeedDialComp() {
     const handleClose = () => setOpen(false)
 
     return (
-        
+       
         <Box sx={{
             height: 0,
             flexGrow: 1
         }}>
-            
+            {/* <ThemeProvider theme={speedDialTheme}> */}
             <SpeedDial 
                 ariaLabel='Sp'
-                sx={{ position: 'absolute', bottom: 32, right: 32, }}
+                sx={{ position: 'absolute', bottom: 32, right: 32,  }}
                 icon={<SpeedDialIcon />}
                 onClose={handleClose}
                 onOpen={handleOpen}
                 open={open}
+                
             >
                 {actions.map((action => (
                     <SpeedDialAction key={action.name} icon={action.icon} tooltipTitle={action.name} tooltipOpen onClick={handleClose}/>
@@ -40,7 +55,8 @@ export default function SpeedDialComp() {
                 
                 </SpeedDial>
 
-            
+            {/* </ThemeProvider> */}
             </Box>
+        
     )
 }

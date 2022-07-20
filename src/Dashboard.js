@@ -27,6 +27,7 @@ import SearchAppBar from './TopAppBar.js';
 import parse from 'autosuggest-highlight/parse';
 import match from 'autosuggest-highlight/match';
 import Tab from '@mui/material/Tab';
+import ChartTab from './ChartTab.js';
 function Copyright(props) {
     return (
         <Typography variant="body2" color="text.secondary" align="center" {...props}>
@@ -133,10 +134,18 @@ function TabPanel(props) {
             aria-labelledby={`simple-tab-${index}`}
             {...other}
         >
-            {value === index && (
+            {value === index && value=== 0 && (
                 <Box sx={{ p: 3 }}>
                     <Typography>{children}</Typography>
                 </Box>
+            )}
+            {value === index && value === 1 && (
+                <Box sx={{ p: 3 }}>
+                    <Typography>{children}</Typography>
+                </Box>
+            )}
+            {value === index && value === 2 && (
+                <ChartTab />
             )}
         </div>
     );
@@ -173,63 +182,63 @@ function DashboardContent() {
     const [value, setValue] = React.useState(stocks[0].label)
 
     // when user inputs new value
-    const onValueChanged = (event, newStock)=>{
+    const onValueChanged = (event, newStock) => {
         setValue(newStock)
     }
 
     // show chart according to newStock, need pass to chart
-    
+
 
     // states of tab
-    const [tabValue, setTabValue] = React.useState('1')
+    const [tabValue, setTabValue] = React.useState(0)
     const handleTabChange = (event, newValue) => {
         setTabValue(newValue)
     }
 
     return (
         <ThemeProvider theme={dashTheme}>
-        <Box sx={{ display: 'flex' }}>
-            <CssBaseline />
+            <Box sx={{ display: 'flex' }}>
+                <CssBaseline />
 
-            <AppBar position='fixed' color='inherit' >
-                <Toolbar>
-                    <IconButton
-                        size='large'
-                        edge='start'
-                        color='inherit'
-                        aria-label='open drawer'
-                        sx={{ mr: 2 }}
-                        onClick={handleOpen}
-                    >
-                        <MenuIcon />
-                    </IconButton>
-                    <Typography
-                        variant="h6"
-                        noWrap
-                        component="div"
-                        sx={{ flexGrow: 1, display: { xs: 'none', sm: 'block' } }}
-                    >
-                        Stocks Dashboard
-                    </Typography>
-                    <Autocomplete
-                        options={stocks}
-                        value={value}
-                        onChange={onValueChanged}
-                        size='small'
-                        blurOnSelect
-                        renderInput={(params) => <TextField {...params}
-                            label="Stocks"
-                            sx={{ width: 300 }}
-                            variant='standard' />}
-                        sx={{
-                            
-                            padding: dashTheme.spacing(1, 1, 1, 0),
-                            [dashTheme.breakpoints.up('sm')]: {
-                                marginLeft: dashTheme.spacing(1),
-                                width: 'auto',
-                            },
+                <AppBar position='fixed' color='inherit' >
+                    <Toolbar>
+                        <IconButton
+                            size='large'
+                            edge='start'
+                            color='inherit'
+                            aria-label='open drawer'
+                            sx={{ mr: 2 }}
+                            onClick={handleOpen}
+                        >
+                            <MenuIcon />
+                        </IconButton>
+                        <Typography
+                            variant="h6"
+                            noWrap
+                            component="div"
+                            sx={{ flexGrow: 1, display: { xs: 'none', sm: 'block' } }}
+                        >
+                            Stocks Dashboard
+                        </Typography>
+                        <Autocomplete
+                            options={stocks}
+                            value={value}
+                            onChange={onValueChanged}
+                            size='small'
+                            blurOnSelect
+                            renderInput={(params) => <TextField {...params}
+                                label="Stocks"
+                                sx={{ width: 300 }}
+                                variant='standard' />}
+                            sx={{
+
+                                padding: dashTheme.spacing(1, 1, 1, 0),
+                                [dashTheme.breakpoints.up('sm')]: {
+                                    marginLeft: dashTheme.spacing(1),
+                                    width: 'auto',
+                                },
                             }}
-                            renderOption={(props,option, { inputValue }) => {
+                            renderOption={(props, option, { inputValue }) => {
                                 const matches = match(option.label, inputValue)
                                 const parts = parse(option.label, matches)
                                 return (
@@ -247,25 +256,26 @@ function DashboardContent() {
                                             ))}
                                         </div>
                                     </li>
-                                
-                            )
-                        }}
-                    >
 
-                    </Autocomplete>
+                                )
+                            }}
+                        >
+
+                        </Autocomplete>
                     </Toolbar>
 
                 </AppBar>
-                <AppBar position='fixed' color='transparent' sx={{ display: 'flex', mt: '65px', maxHeight:'30px' }}>
-                    <Toolbar sx={{}}>
-                            <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+                <AppBar position='fixed' color='inherit' sx={{ display: 'flex', mt: '65px', maxHeight: '60px' }}>
+                    
+                        <Box sx={{ width: '100%' }}>
+                        <Box sx={{ borderBottom: 1, borderColor: 'transparent' }}>
 
-                        <Tabs value={tabValue} onChange={handleTabChange}>
-                            <Tab label="Item One" {...a11yProps(0)} />
-                            <Tab label="Item Two" {...a11yProps(1)} />
-                            <Tab label="Item Three" {...a11yProps(2)} />
-                                </Tabs>
-                                </Box>
+                            <Tabs value={tabValue} onChange={handleTabChange}>
+                                <Tab label="Item One" {...a11yProps(0)} />
+                                <Tab label="Item Two" {...a11yProps(1)} />
+                                <Tab label="Item Three" {...a11yProps(2)} />
+                            </Tabs>
+                        </Box>
                         <TabPanel value={tabValue} index={0}>
                             Item One
                         </TabPanel>
@@ -275,102 +285,35 @@ function DashboardContent() {
                         <TabPanel value={tabValue} index={2}>
                             Item Three
                             </TabPanel>
-                    </Toolbar>
+                            </Box>
+                    
                 </AppBar>
 
-            <MuiDrawer variant='temporary' open={open} onClose ={handleClose}>
-                <Toolbar
-                    sx={{
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'flex-end',
-                        px: [1],
-                    }}
-                >
-                    <IconButton onClick={handleClose}>
-                        <ChevronLeftIcon />
-                    </IconButton>
-                </Toolbar>
-                <Divider />
-                <List component="nav">
-                    <ListItem>
-                        <ListItemText primary="placeHolder"></ListItemText>
-                    </ListItem>
-                    {/* {mainListItems} */}
-                    <Divider sx={{ my: 1 }} />
-                    {/* {secondaryListItems} */}
-                </List>
-            </MuiDrawer>
-            <Box
-                component="main"
-                sx={{
-                    flexGrow: 1,
-                    height: '100vh',
-                    overflow: 'auto',
-                }}
-            >
-                <Toolbar />
-                <Container maxWidth="lg" sx={{ mt: 10, mb: 4 }}>
-                    <Grid container spacing={3}>
-                        <Grid item xs={12} lg={12}>
-                            <Paper
-                                sx={{
-                                    p: 2,
-                                    display: 'flex',
-                                    flexDirection: 'column',
-                                    height: 300
-                                }}
-                            >
-
-                                <Chart />
-                            </Paper>
-                        </Grid>
-                        {/* Recent Deposits */}
-                        {/* <Grid item xs={12} md={4} lg={3}>
-                                <Paper
-                                    sx={{
-                                        p: 2,
-                                        display: 'flex',
-                                        flexDirection: 'column',
-                                        height: 240,
-                                    }}
-                                >
-                                    
-                                </Paper>
-                            </Grid> */}
-                        {/* Recent Orders */}
-                        <Grid item xs={12} md={4} lg={3}>
-                            <Paper sx={{
-                                p: 2,
-                                display: 'flex',
-                                flexDirection: 'column',
-
-                            }}>
-                            </Paper>
-                        </Grid>
-                        <Grid item xs={12} lg={6}>
-                            <Paper sx={{
-                                p: 2,
-                                display: 'flex',
-                                flexDirection: 'column',
-
-                            }}>
-                            </Paper>
-                        </Grid>
-                        <Grid item xs={12} lg={3}>
-                            <Paper sx={{
-                                p: 2,
-                                display: 'flex',
-                                flexDirection: 'column',
-
-                            }}>
-                            </Paper>
-                        </Grid>
-                    </Grid>
-                    <Copyright sx={{ pt: 4 }} />
-                </Container>
+                <MuiDrawer variant='temporary' open={open} onClose={handleClose}>
+                    <Toolbar
+                        sx={{
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'flex-end',
+                            px: [1],
+                        }}
+                    >
+                        <IconButton onClick={handleClose}>
+                            <ChevronLeftIcon />
+                        </IconButton>
+                    </Toolbar>
+                    <Divider />
+                    <List component="nav">
+                        <ListItem>
+                            <ListItemText primary="placeHolder"></ListItemText>
+                        </ListItem>
+                        {/* {mainListItems} */}
+                        <Divider sx={{ my: 1 }} />
+                        {/* {secondaryListItems} */}
+                    </List>
+                </MuiDrawer>
+                
             </Box>
-        </Box>
         </ThemeProvider>
     );
 }
