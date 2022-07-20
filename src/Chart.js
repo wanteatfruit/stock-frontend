@@ -142,11 +142,10 @@ export default function Chart(props) {
                     <Tooltip />
                     <Brush />
                     <Line
-                        isAnimationActive={false}
+                        isAnimationActive={true}
                         type="monotone"
                         dataKey="amount"
                         stroke={chartTheme.palette.primary.main}
-                        dot={false}
                     />
                 </LineChart>
             </ResponsiveContainer>
