@@ -28,6 +28,7 @@ import parse from 'autosuggest-highlight/parse';
 import match from 'autosuggest-highlight/match';
 import Tab from '@mui/material/Tab';
 import ChartTab from './ChartTab.js';
+import SpeedDialComp from './SpeedDial.js';
 function Copyright(props) {
     return (
         <Typography variant="body2" color="text.secondary" align="center" {...props}>
@@ -145,7 +146,9 @@ function TabPanel(props) {
                 </Box>
             )}
             {value === index && value === 2 && (
-                <ChartTab />
+                <>
+                    <ChartTab />    
+                </>
             )}
         </div>
     );
@@ -265,10 +268,10 @@ function DashboardContent() {
                     </Toolbar>
 
                 </AppBar>
-                <AppBar position='fixed' color='inherit' sx={{ display: 'flex', mt: '65px', maxHeight: '60px' }}>
+                <AppBar elevation={false} position='fixed' color='inherit' sx={{ display: 'flex', mt: '65px',}}>
                     
-                        <Box sx={{ width: '100%' }}>
-                        <Box sx={{ borderBottom: 1, borderColor: 'transparent' }}>
+                        <Box sx={{ width: '100%', pl:2, pr:2}}>
+                        <Box sx={{ borderBottom: 1, borderColor: 'divider',pl:4 }}>
 
                             <Tabs value={tabValue} onChange={handleTabChange}>
                                 <Tab label="Item One" {...a11yProps(0)} />
@@ -283,7 +286,7 @@ function DashboardContent() {
                             Item Two
                         </TabPanel>
                         <TabPanel value={tabValue} index={2}>
-                            Item Three
+                            
                             </TabPanel>
                             </Box>
                     

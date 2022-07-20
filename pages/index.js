@@ -17,7 +17,7 @@ const DynamicHeader = dynamic(() => import('../src/Dashboard'), {
 export default function Home() {
   return (
     <Suspense fallback={'Loading...'}>
-      <SpeedDialComp />
+      
       <DynamicHeader />
 
     </Suspense>

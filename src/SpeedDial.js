@@ -36,10 +36,10 @@ export default function SpeedDialComp() {
     return (
        
         <Box sx={{
-            height: 0,
+           
             flexGrow: 1
         }}>
-            {/* <ThemeProvider theme={speedDialTheme}> */}
+
             <SpeedDial 
                 ariaLabel='Sp'
                 sx={{ position: 'absolute', bottom: 32, right: 32,  }}
@@ -55,7 +55,6 @@ export default function SpeedDialComp() {
                 
                 </SpeedDial>
 
-            {/* </ThemeProvider> */}
             </Box>
         
     )
