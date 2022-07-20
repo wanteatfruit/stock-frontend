@@ -19,11 +19,13 @@ import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 // import { mainListItems, secondaryListItems } from './listItems';
 import Chart from './Chart.js';
-import theme from './theme.js';
+// import theme from './theme.js';
 import { AppBar, Autocomplete, Button, ButtonGroup, Icon, ListItem, ListItemText, TextField } from '@mui/material';
 import SearchAppBar from './TopAppBar.js';
 // import Deposits from './Deposits';
 // import Orders from './Orders';
+import parse from 'autosuggest-highlight/parse';
+import match from 'autosuggest-highlight/match';
 
 function Copyright(props) {
     return (
@@ -37,6 +39,39 @@ function Copyright(props) {
         </Typography>
     );
 }
+
+const dashTheme = createTheme({
+    palette: {
+        type: 'light',
+        primary: {
+            main: '#ff1744',
+        },
+        secondary: {
+            main: '#ff1744',
+        },
+        info: {
+            main: '#2196f3',
+        },
+    },
+    overrides: {
+        MuiButton: {
+            root: {
+                background: 'linear-gradient(45deg, #FE6B8B 30%, #FF8E53 90%)',
+                border: 0,
+                borderRadius: 3,
+                boxShadow: '0 3px 5px 2px rgba(255, 105, 135, .3)',
+                color: 'white',
+                height: 48,
+                padding: '0 30px',
+            },
+        },
+    },
+    props: {
+        AppBar: {
+            color: 'transparent',
+        },
+    },
+})
 
 const drawerWidth = 240;
 
@@ -57,20 +92,7 @@ const drawerWidth = 240;
 //         }),
 //     }),
 // }));
-const Search = styled('div')(({ theme }) => ({
-    position: 'relative',
-    borderRadius: theme.shape.borderRadius,
-    backgroundColor: alpha(theme.palette.common.white, 0.15),
-    '&:hover': {
-        backgroundColor: alpha(theme.palette.common.white, 0.25),
-    },
-    marginLeft: 0,
-    width: '100%',
-    [theme.breakpoints.up('sm')]: {
-        marginLeft: theme.spacing(1),
-        width: 'auto',
-    },
-}));
+
 
 const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' })(
     ({ theme, open }) => ({
@@ -99,45 +121,11 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
 );
 
 
-const mdTheme = createTheme({
-    palette: {
-        type: 'light',
-        primary: {
-            main: '#1976d2',
-        },
-        secondary: {
-            main: 'rgb(220, 0, 78)',
-        },
-        background: {
-            default: '#000000',
-            paper: '#ffffff',
-        },
-    },
-    overrides: {
-        MuiButton: {
-            root: {
-                background: 'linear-gradient(45deg, #FE6B8B 30%, #FF8E53 90%)',
-                border: 0,
-                borderRadius: 3,
-                boxShadow: '0 3px 5px 2px rgba(255, 105, 135, .3)',
-                color: 'white',
-                height: 48,
-                padding: '0 30px',
-            },
-        },
-    },
-    props: {
-        AppBar: {
-            color: 'transparent',
-        },
-    },
-})
+
 
 function DashboardContent() {
+    // states of side drawer
     const [open, setOpen] = React.useState(false);
-    const toggleDrawer = () => {
-        setOpen(!open);
-    };
 
     const handleClose = () => {
         setOpen(false)
@@ -147,12 +135,23 @@ function DashboardContent() {
         setOpen(true)
     }
 
+    // states of auto complete, store a stock list in front end
+    const [value, setValue] = React.useState(stocks[0].label)
+
+    // when user inputs new value
+    const onValueChanged = (event, newStock)=>{
+        setValue(newStock)
+    }
+
+    // show chart according to newStock, need pass to chart
+    
+
     return (
-        // <ThemeProvider theme={mdTheme}>
+        <ThemeProvider theme={dashTheme}>
         <Box sx={{ display: 'flex' }}>
             <CssBaseline />
 
-            <AppBar position='absolute' color='transparent'>
+            <AppBar position='fixed' color='inherit'>
                 <Toolbar>
                     <IconButton
                         size='large'
@@ -174,22 +173,46 @@ function DashboardContent() {
                     </Typography>
                     <Autocomplete
                         options={stocks}
+                        value={value}
+                        onChange={onValueChanged}
                         size='small'
+                        blurOnSelect
                         renderInput={(params) => <TextField {...params}
                             label="Stocks"
-                            sx={{ width: 300, color: 'inherit' }}
-                            variant='filled' />}
+                            sx={{ width: 300 }}
+                            variant='standard' />}
                         sx={{
-                            padding: theme.spacing(1, 1, 1, 0),
-                            [theme.breakpoints.up('sm')]: {
-                                marginLeft: theme.spacing(1),
+                            
+                            padding: dashTheme.spacing(1, 1, 1, 0),
+                            [dashTheme.breakpoints.up('sm')]: {
+                                marginLeft: dashTheme.spacing(1),
                                 width: 'auto',
                             },
+                            }}
+                            renderOption={(props,option, { inputValue }) => {
+                                const matches = match(option.label, inputValue)
+                                const parts = parse(option.label, matches)
+                                return (
+                                    <li {...props}>
+                                        <div>
+                                            {parts.map((part, index) => (
+                                                <span
+                                                    key={index}
+                                                    style={{
+                                                        fontWeight: part.highlight ? 700 : 400,
+                                                    }}
+                                                >
+                                                    {part.text}
+                                                </span>
+                                            ))}
+                                        </div>
+                                    </li>
+                                
+                            )
                         }}
                     >
 
                     </Autocomplete>
-                    <Search />
                 </Toolbar>
             </AppBar>
             {/* <MuiAppBar color="transparent" position="absolute" open={open}>
@@ -319,7 +342,7 @@ function DashboardContent() {
                 </Container>
             </Box>
         </Box>
-        // </ThemeProvider>
+        </ThemeProvider>
     );
 }
 const stocks = [{ label: 'AAPL', market: 'US' },
