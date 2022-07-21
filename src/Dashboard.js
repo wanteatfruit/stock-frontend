@@ -29,18 +29,7 @@ import match from 'autosuggest-highlight/match';
 import Tab from '@mui/material/Tab';
 import ChartTab from './ChartTab.js';
 import SpeedDialComp from './SpeedDial.js';
-function Copyright(props) {
-    return (
-        <Typography variant="body2" color="text.secondary" align="center" {...props}>
-            {'Copyright © '}
-            <Link color="inherit" href="https://mui.com/">
-                Your Website
-            </Link>{' '}
-            {new Date().getFullYear()}
-            {'.'}
-        </Typography>
-    );
-}
+
 
 const dashTheme = createTheme({
     palette: {
@@ -54,6 +43,12 @@ const dashTheme = createTheme({
         info: {
             main: '#2196f3',
         },
+    },
+    typography: {
+        fontFamily: [
+            'Roboto',
+            
+        ]
     },
     overrides: {
         MuiButton: {
@@ -147,18 +142,18 @@ function TabPanel(props) {
             )}
             {value === index && value === 2 && (
                 <>
-                    <ChartTab />    
+                    <ChartTab stock_name={children}></ChartTab>    
                 </>
             )}
         </div>
     );
 }
 
-TabPanel.propTypes = {
-    children: PropTypes.node,
-    index: PropTypes.number.isRequired,
-    value: PropTypes.number.isRequired,
-};
+// TabPanel.propTypes = {
+//     children: PropTypes.node,
+//     index: PropTypes.number.isRequired,
+//     value: PropTypes.number.isRequired,
+// };
 
 function a11yProps(index) {
     return {
@@ -182,18 +177,14 @@ function DashboardContent() {
     }
 
     // states of auto complete, store a stock list in front end
-    const [value, setValue] = React.useState(stocks[0].label)
+    const [stockName, setStockName] = React.useState(stocks[0])
 
-    // when user inputs new value
     const onValueChanged = (event, newStock) => {
-        setValue(newStock)
+        setStockName(newStock)
     }
 
-    // show chart according to newStock, need pass to chart
-
-
     // states of tab
-    const [tabValue, setTabValue] = React.useState(0)
+    const [tabValue, setTabValue] = React.useState(2)
     const handleTabChange = (event, newValue) => {
         setTabValue(newValue)
     }
@@ -223,9 +214,13 @@ function DashboardContent() {
                         >
                             Stocks Dashboard
                         </Typography>
+                        {/* options attribute use 'label' atrribute in .json 
+                            or 1-D array elements. use getOptionLabel to customize option structrue.
+                            value attribute is an json object, not a string (not to be confused while passing props) */}
                         <Autocomplete
+                            getOptionLabel={(option)=>option.name}
                             options={stocks}
-                            value={value}
+                            value={stockName}
                             onChange={onValueChanged}
                             size='small'
                             blurOnSelect
@@ -242,8 +237,8 @@ function DashboardContent() {
                                 },
                             }}
                             renderOption={(props, option, { inputValue }) => {
-                                const matches = match(option.label, inputValue)
-                                const parts = parse(option.label, matches)
+                                const matches = match(option.name, inputValue)
+                                const parts = parse(option.name, matches)
                                 return (
                                     <li {...props}>
                                         <div>
@@ -272,11 +267,10 @@ function DashboardContent() {
                     
                         <Box sx={{ width: '100%', pl:2, pr:2}}>
                         <Box sx={{ borderBottom: 1, borderColor: 'divider',pl:4 }}>
-
                             <Tabs value={tabValue} onChange={handleTabChange}>
                                 <Tab label="Item One" {...a11yProps(0)} />
                                 <Tab label="Item Two" {...a11yProps(1)} />
-                                <Tab label="Item Three" {...a11yProps(2)} />
+                                <Tab label="Stock Chart" {...a11yProps(2)} />
                             </Tabs>
                         </Box>
                         <TabPanel value={tabValue} index={0}>
@@ -286,10 +280,9 @@ function DashboardContent() {
                             Item Two
                         </TabPanel>
                         <TabPanel value={tabValue} index={2}>
-                            
-                            </TabPanel>
-                            </Box>
-                    
+                            {stockName}
+                        </TabPanel>
+                    </Box>
                 </AppBar>
 
                 <MuiDrawer variant='temporary' open={open} onClose={handleClose}>
@@ -320,8 +313,8 @@ function DashboardContent() {
         </ThemeProvider>
     );
 }
-const stocks = [{ label: 'AAPL', market: 'US' },
-{ label: '000123', market: 'CN' }]
+const stocks = [{id:1, name: 'AAPL', market: 'US' },
+    { id:2, name: '000123', market: 'CN' }]
 
 export default function Dashboard() {
     return <DashboardContent />;

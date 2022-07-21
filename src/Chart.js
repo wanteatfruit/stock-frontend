@@ -5,6 +5,9 @@ import { Button, ButtonGroup, createTheme } from '@mui/material';
 import Stack from '@mui/material/Stack';
 import ToggleButton from '@mui/material/ToggleButton';
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
+import { func } from 'prop-types';
+import useSWR from 'swr';
+import axios from 'axios';
 
 // Generate Sales Data
 function createData(time, amount) {
@@ -35,8 +38,32 @@ const oneYearData = [
     createData('1002', 2)
 ]
 
-const clicked = () =>{alert('clicked')}
+const fiveYearData = [
+    createData('1001', 1),
+    createData('1002', 2)
+]
 
+//get data from backend
+const fetcher = (url)=>axios.get(url).then((response)=>response.data)
+
+//post to backend
+const poster = (url)=> axios.post(url).then((response)=>response.data)
+
+function requestData(stock_name) {
+    const { data, error } = useSWR('http://127.0.0.1:8000/stocks/', fetcher)
+    if (error) console.log(error)
+    console.log(data)
+    return data
+}
+
+function postData(stock_name) {
+    const { data, error } = useSWR('api/${stock_name}', poster)
+    if (error) console.log(error)
+    console.log(data)
+    return data
+}
+
+//change data range
 function changeData(range) {
     switch (range) {
         case 'oneWeek':
@@ -45,11 +72,28 @@ function changeData(range) {
             return oneMonthData
         case 'oneYear':
             return oneYearData
+        case 'fiveYear':
+            return fiveYearData
+    }
+}
+
+//change stock name
+function changeStock(stock) {
+    console.log(stock)
+    if (stock === null) {
+        return null
+    }
+    switch (stock.name) {
+        
+        case 'AAPL':
+            return data
+        case '000123':
+            return oneMonthData
     }
 }
 
 
-export default function Chart(props) {
+export default function Chart({stock_name}) {
     const chartTheme = createTheme({
         palette: {
             type: 'light',
@@ -74,14 +118,11 @@ export default function Chart(props) {
         }
     }
 
-    // build api and fetch data
-    const stockName = props.name
+    const stockName = stock_name
 
     return (
         <React.Fragment>
             {/* <Title>Today</Title> */}
-            {/* <RowRadioButtonsGroup /> */}
-            {/* <TimeToggleButtons /> */}
             <Stack direction="row" spacing={4}>
                 <ToggleButtonGroup
                     value={range}
@@ -107,7 +148,7 @@ export default function Chart(props) {
             </Stack>
             <ResponsiveContainer>
                 <LineChart
-                    data={changeData(range)}
+                    data={changeStock(stockName)}
                     margin={{
                         top: 16,
                         right: 16,
@@ -140,7 +181,7 @@ export default function Chart(props) {
                     <Brush />
                     <Line
                         isAnimationActive={true}
-                        type="monotone"
+                        type="linear"
                         dataKey="amount"
                         stroke={chartTheme.palette.primary.main}
                     />
