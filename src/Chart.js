@@ -43,25 +43,6 @@ const fiveYearData = [
     createData('1002', 2)
 ]
 
-//get data from backend
-const fetcher = (url)=>axios.get(url).then((response)=>response.data)
-
-//post to backend
-const poster = (url)=> axios.post(url).then((response)=>response.data)
-
-function requestData(stock_name) {
-    const { data, error } = useSWR('http://127.0.0.1:8000/stocks/', fetcher)
-    if (error) console.log(error)
-    console.log(data)
-    return data
-}
-
-function postData(stock_name) {
-    const { data, error } = useSWR('api/${stock_name}', poster)
-    if (error) console.log(error)
-    console.log(data)
-    return data
-}
 
 //change data range
 function changeData(range) {
@@ -120,6 +101,14 @@ export default function Chart({stock_name}) {
 
     const stockName = stock_name
 
+    //get from backend
+    const [stockData, setData] = React.useState()
+    React.useEffect(() => {
+        axios.get('http://127.0.0.1:8000/stocks/').then((res) => {
+            console.log(res.data)
+            setData(res.data)
+        })
+    },[stockName]) //triggers when stockName/range changes
     return (
         <React.Fragment>
             {/* <Title>Today</Title> */}
@@ -148,7 +137,7 @@ export default function Chart({stock_name}) {
             </Stack>
             <ResponsiveContainer>
                 <LineChart
-                    data={changeStock(stockName)}
+                    data={stockData}
                     margin={{
                         top: 16,
                         right: 16,
@@ -157,11 +146,12 @@ export default function Chart({stock_name}) {
                     }}
                 >
                     <XAxis
-                        dataKey="time"
+                        dataKey="current_date"
                         stroke={chartTheme.palette.text.secondary}
                         style={chartTheme.typography.body2}
                     />
                     <YAxis
+                        
                         stroke={chartTheme.palette.text.secondary}
                         style={chartTheme.typography.body2}
                     >
@@ -182,8 +172,9 @@ export default function Chart({stock_name}) {
                     <Line
                         isAnimationActive={true}
                         type="linear"
-                        dataKey="amount"
+                        dataKey="price"
                         stroke={chartTheme.palette.primary.main}
+                        activeDot={{r:8}}
                     />
                 </LineChart>
             </ResponsiveContainer>
