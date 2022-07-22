@@ -99,16 +99,20 @@ export default function Chart({stock_name}) {
         }
     }
 
-    const stockName = stock_name
+    const stock = stock_name
+    const stockName = stock_name.name
 
     //get from backend
     const [stockData, setData] = React.useState()
     React.useEffect(() => {
-        axios.get('http://127.0.0.1:8000/stocks/').then((res) => {
+        console.log(stockName)
+        var url = new URL("http://127.0.0.1:8000/stocks")
+        
+        axios.get(url.href+'/'+stockName).then((res) => {
             console.log(res.data)
             setData(res.data)
         })
-    },[stockName]) //triggers when stockName/range changes
+    },[stock_name]) //triggers when stockName/range changes
     return (
         <React.Fragment>
             {/* <Title>Today</Title> */}

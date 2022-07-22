@@ -2,7 +2,7 @@ import { DataGrid } from "@mui/x-data-grid"
 import axios from "axios"
 import React from "react"
 const columns = [
-    { field: 'id', headerName: 'ID' },
+   
     { field: 'current_date', headerName: 'Date' },
     { field: 'price', headerName: 'Open Price', type: 'number' },
 ]
@@ -25,12 +25,14 @@ export default function StockTable({ stock_name }) {
     },[])
 
     return (
-        <div style={{width:'100%', height:400}}>
+        <div style={{width:'100%',height:500, display:'flex',}}>
             <DataGrid
+                getRowId={(row)=>row.current_date}
                 rows={(data===undefined?rows:data)}
                 columns={columns}
-                pageSize={10}
-                rowsPerPageOptions={[5]}
+                rowHeight={38}
+                rowsPerPageOptions={[20, 100, 500]}
+                sx={{alignContent: 'center'}}
             />
         </div>
     )

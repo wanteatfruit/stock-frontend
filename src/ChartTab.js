@@ -18,14 +18,15 @@ export default function ChartTab({stock_name}) {
         >
             <Container  sx={{ mt: 4, mb: 4 }}>
                 <Grid container spacing={3}>
-                    <Grid item xs={12} lg={12}>
+                    <Grid item xs={12}>
                         <Paper
                             variant='outlined'
                             sx={{
                                 p: 2,
                                 display: 'flex',
                                 flexDirection: 'column',
-                                height: 400
+                                height: 400,
+                                width:'100%'
                             }}
                             
                         >

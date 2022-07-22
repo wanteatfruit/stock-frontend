@@ -13,7 +13,6 @@ import Badge from '@mui/material/Badge';
 import Container from '@mui/material/Container';
 import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
-import Link from '@mui/material/Link';
 import MenuIcon from '@mui/icons-material/Menu';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import NotificationsIcon from '@mui/icons-material/Notifications';
@@ -33,7 +32,7 @@ import StockTable from './StockTable.js';
 import TrendingUpIcon from '@mui/icons-material/TrendingUp';
 import TableChartIcon from '@mui/icons-material/TableChart';
 import BarChartIcon from '@mui/icons-material/BarChart';
-
+import KeyboardBackspaceIcon from '@mui/icons-material/KeyboardBackspace';
 const dashTheme = createTheme({
     palette: {
         type: 'light',
@@ -74,25 +73,6 @@ const dashTheme = createTheme({
 })
 
 const drawerWidth = 240;
-
-// const AppBar = styled(MuiAppBar, {
-//     shouldForwardProp: (prop) => prop !== 'open',
-// })(({ theme, open }) => ({
-//     zIndex: theme.zIndex.drawer + 1,
-//     transition: theme.transitions.create(['width', 'margin'], {
-//         easing: theme.transitions.easing.sharp,
-//         duration: theme.transitions.duration.leavingScreen,
-//     }),
-//     ...(open && {
-//         marginLeft: drawerWidth,
-//         width: `calc(100% - ${drawerWidth}px)`,
-//         transition: theme.transitions.create(['width', 'margin'], {
-//             easing: theme.transitions.easing.sharp,
-//             duration: theme.transitions.duration.enteringScreen,
-//         }),
-//     }),
-// }));
-
 
 // const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' })(
 //     ({ theme, open }) => ({
@@ -190,8 +170,9 @@ function DashboardContent() {
     return (
         <ThemeProvider theme={dashTheme}>
             <Box sx={{ display: 'flex' }}>
+                
                 <CssBaseline />
-
+                
                 <AppBar position='fixed' color='inherit' >
                     <Toolbar>
                         <IconButton
@@ -203,6 +184,15 @@ function DashboardContent() {
                             onClick={handleOpen}
                         >
                             <MenuIcon />
+                        </IconButton>
+                        <IconButton
+                            size='large'
+                            edge='start'
+                            color='inherit'
+                            sx={{ mr: 2 }}
+                            href='/'
+                        >
+                            <KeyboardBackspaceIcon />
                         </IconButton>
                         <Typography
                             variant="h6"
@@ -280,6 +270,7 @@ function DashboardContent() {
                             {stockName}
                         </TabPanel>
                     </Box>
+                    
                 </AppBar>
 
                 <MuiDrawer variant='temporary' open={open} onClose={handleClose}>
@@ -313,7 +304,10 @@ function DashboardContent() {
 
 //maintain a list of available stocks
 const stocks = [{id:1, name: 'AAPL', market: 'NASDAQ' },
-    { id:2, name: '000123', market: 'SSE' }]
+    { id: 2, name: '000123', market: 'SSE' },
+    { id: 3, name: 'A', market: 'SSE' },
+    { id: 4, name: 'B', market: 'SSE' },
+    { id: 5, name: 'C', market: 'SSE' }]
 
 export default function Dashboard() {
     return <DashboardContent />;

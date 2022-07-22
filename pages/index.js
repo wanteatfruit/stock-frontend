@@ -1,10 +1,12 @@
-
+import React from 'react';
 import Head from 'next/head'
-import { Link,Box, Typography, CssBaseline, Grid,Container,Stack,Button, createTheme, Divider } from "@mui/material";
+import { Link,Box, TextField,Typography, CssBaseline, Autocomplete,Container,Stack,Button, createTheme, Divider } from "@mui/material";
 import { styled } from "@mui/system";
 import { Suspense } from "react";
 import { ThemeProvider } from '@emotion/react';
 import { NextLinkComposed } from '../src/Link.tsx';
+import parse from 'autosuggest-highlight/parse';
+import match from 'autosuggest-highlight/match';
 
 export default function Home() {
 
@@ -14,9 +16,42 @@ export default function Home() {
         fontFamily: [
           'Montserrat'
         ]
-      }
+      },
+      palette: {
+        type: 'light',
+        primary: {
+          main: '#ff1744',
+        },
+        secondary: {
+          main: '#ff1744',
+        },
+        info: {
+          main: '#2196f3',
+        },
+      },
+      typography: {
+        fontFamily: [
+          "Montserrat"
+
+        ]
+      },
+      overrides: {
+        Button: {
+          root: {
+            background: 'linear-gradient(45deg, #FE6B8B 30%, #FF8E53 90%)',
+          },
+        },
+      },
+
     }
   )
+
+  // states of auto complete, store a stock list in front end
+  const [stockName, setStockName] = React.useState(stocks[0])
+  const onValueChanged = (event, newStock) => {
+    setStockName(newStock)
+  }
+
   return (
 
     <Suspense>
@@ -29,10 +64,11 @@ export default function Home() {
           bgcolor: 'background.paper',
           pt: 14,
           pb: 6,
+          
         }}
       >
         
-        <Container maxWidth="md">
+        <Container maxWidth="md" >
           <Typography
             variant="h1"
             align="center"
@@ -50,13 +86,53 @@ export default function Home() {
             Maybe some brief introduction of our project
           </Typography>
             <Stack
-              divider={<Divider flexItem/>}
+              direction='row'
             sx={{ pt: 4,  }}
             spacing={2}
-              alignItems='center'
+            justifyContent='center'
           >
-            <Button component={NextLinkComposed} to={{pathname:'/stocks'}} variant="contained">Go!</Button>
-            <Button variant="outlined">Maybe other stuff</Button>
+              <Autocomplete
+                getOptionLabel={(option) => option.name}
+                groupBy={(option) => option.market}
+                options={stocks}
+                value={stockName}
+                onChange={onValueChanged}
+                size='small'
+                blurOnSelect
+                renderInput={(params) => <TextField {...params}
+                  label="Enter a stock name"
+                  sx={{ width: 300 }}
+                  variant='standard' />}
+                renderOption={(props, option, { inputValue }) => {
+                  const matches = match(option.name, inputValue)
+                  const parts = parse(option.name, matches)
+                  return (
+                    <li {...props}>
+                      <div>
+                        {parts.map((part, index) => (
+                          <span
+                            key={index}
+                            style={{
+                              fontWeight: part.highlight ? 700 : 400,
+                            }}
+                          >
+                            {part.text}
+                          </span>
+                        ))}
+                      </div>
+                    </li>
+                  )
+                }}
+              >
+              </Autocomplete>
+              <Button
+                component={NextLinkComposed}
+                to={{ pathname: '/stocks' }}
+                variant="contained"
+                size='large'
+                sx={{
+                  //background: 'linear-gradient(45deg, #A22FCE, #FF7000)',
+              }}>Go!</Button>
           </Stack>
         </Container>
         </Box>
@@ -65,3 +141,6 @@ export default function Home() {
   )
 }
 
+//maintain a list of available stocks
+const stocks = [{ id: 1, name: 'AAPL', market: 'NASDAQ' },
+{ id: 2, name: '000123', market: 'SSE' }]
