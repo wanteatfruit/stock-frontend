@@ -29,6 +29,7 @@ import match from 'autosuggest-highlight/match';
 import Tab from '@mui/material/Tab';
 import ChartTab from './ChartTab.js';
 import SpeedDialComp from './SpeedDial.js';
+import StockTable from './StockTable.js';
 
 
 const dashTheme = createTheme({
@@ -46,7 +47,7 @@ const dashTheme = createTheme({
     },
     typography: {
         fontFamily: [
-            'Roboto',
+            "Montserrat"
             
         ]
     },
@@ -132,7 +133,7 @@ function TabPanel(props) {
         >
             {value === index && value=== 0 && (
                 <Box sx={{ p: 3 }}>
-                    <Typography>{children}</Typography>
+                    <StockTable />
                 </Box>
             )}
             {value === index && value === 1 && (
@@ -218,7 +219,8 @@ function DashboardContent() {
                             or 1-D array elements. use getOptionLabel to customize option structrue.
                             value attribute is an json object, not a string (not to be confused while passing props) */}
                         <Autocomplete
-                            getOptionLabel={(option)=>option.name}
+                            getOptionLabel={(option) => option.name}
+                            groupBy={(option)=>option.market}
                             options={stocks}
                             value={stockName}
                             onChange={onValueChanged}
@@ -254,11 +256,9 @@ function DashboardContent() {
                                             ))}
                                         </div>
                                     </li>
-
                                 )
                             }}
                         >
-
                         </Autocomplete>
                     </Toolbar>
 
@@ -268,7 +268,7 @@ function DashboardContent() {
                         <Box sx={{ width: '100%', pl:2, pr:2}}>
                         <Box sx={{ borderBottom: 1, borderColor: 'divider',pl:4 }}>
                             <Tabs value={tabValue} onChange={handleTabChange}>
-                                <Tab label="Item One" {...a11yProps(0)} />
+                                <Tab label="Stock Data Table" {...a11yProps(0)} />
                                 <Tab label="Item Two" {...a11yProps(1)} />
                                 <Tab label="Stock Chart" {...a11yProps(2)} />
                             </Tabs>
@@ -313,8 +313,8 @@ function DashboardContent() {
         </ThemeProvider>
     );
 }
-const stocks = [{id:1, name: 'AAPL', market: 'US' },
-    { id:2, name: '000123', market: 'CN' }]
+const stocks = [{id:1, name: 'AAPL', market: 'NASDAQ' },
+    { id:2, name: '000123', market: 'SSE' }]
 
 export default function Dashboard() {
     return <DashboardContent />;
