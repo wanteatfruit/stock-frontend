@@ -8,6 +8,23 @@ import { NextLinkComposed } from '../src/Link.tsx';
 import parse from 'autosuggest-highlight/parse';
 import match from 'autosuggest-highlight/match';
 
+const GradientTextField = styled(TextField)({
+  '& label.Mui-focused': {
+    color: 'linear-gradient(45deg, #A22FCE, #FF7000)',
+  },
+  '& .MuiInput-underline:after': {
+    borderBottomColor: 'linear-gradient(45deg, #A22FCE, #FF7000)',
+  },
+  '& .MuiOutlinedInput-root': {
+    '& fieldset': {
+      borderColor: 'linear-gradient(45deg, #A22FCE, #FF7000)',
+    },
+    '&.Mui-focused fieldset': {
+      borderColor: 'linear-gradient(45deg, #A22FCE, #FF7000)',
+    },
+  },
+});
+
 export default function Home() {
 
   const homeTheme = createTheme(
@@ -35,13 +52,7 @@ export default function Home() {
 
         ]
       },
-      overrides: {
-        Button: {
-          root: {
-            background: 'linear-gradient(45deg, #FE6B8B 30%, #FF8E53 90%)',
-          },
-        },
-      },
+      
 
     }
   )
@@ -97,11 +108,12 @@ export default function Home() {
                 options={stocks}
                 value={stockName}
                 onChange={onValueChanged}
-                size='small'
+                size='large'
                 blurOnSelect
-                renderInput={(params) => <TextField {...params}
-                  label="Enter a stock name"
-                  sx={{ width: 300 }}
+                renderInput={(params) => <GradientTextField {...params}
+                  label="Available stocks"
+                  sx={{
+                    width: 300,  }}
                   variant='standard' />}
                 renderOption={(props, option, { inputValue }) => {
                   const matches = match(option.name, inputValue)
@@ -129,9 +141,9 @@ export default function Home() {
                 component={NextLinkComposed}
                 to={{ pathname: '/stocks' }}
                 variant="contained"
-                size='large'
+                size='medium'
                 sx={{
-                  //background: 'linear-gradient(45deg, #A22FCE, #FF7000)',
+                  background: 'linear-gradient(45deg, #A22FCE, #FF7000)',
               }}>Go!</Button>
           </Stack>
         </Container>
@@ -143,4 +155,7 @@ export default function Home() {
 
 //maintain a list of available stocks
 const stocks = [{ id: 1, name: 'AAPL', market: 'NASDAQ' },
-{ id: 2, name: '000123', market: 'SSE' }]
+{ id: 2, name: '000123', market: 'SSE' },
+{ id: 3, name: 'A', market: 'SSE' },
+{ id: 4, name: 'B', market: 'SSE' },
+{ id: 5, name: 'C', market: 'SSE' }]

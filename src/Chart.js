@@ -28,7 +28,7 @@ export default function Chart({stock_data}) {
     })
 
     // change time range of displayed data
-    const [range, setRange] = React.useState('oneWeek');
+    const [range, setRange] = React.useState('fiveYears');
 
     const handleRange = (event, newRange) => {
         if (newRange !== null) {
