@@ -6,7 +6,7 @@ import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
 import Chart from './Chart.js';
 
-export default function ChartTab({stock_data}) {
+export default function ChartTab({ stock_data, stock_name }) {
     return (
         <Box
             sx={{

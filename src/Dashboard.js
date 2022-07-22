@@ -21,8 +21,6 @@ import Chart from './Chart.js';
 // import theme from './theme.js';
 import { AppBar, Autocomplete, Button, ButtonGroup, Icon, ListItem, ListItemText, Tabs, TextField } from '@mui/material';
 import SearchAppBar from './TopAppBar.js';
-// import Deposits from './Deposits';
-// import Orders from './Orders';
 import parse from 'autosuggest-highlight/parse';
 import match from 'autosuggest-highlight/match';
 import Tab from '@mui/material/Tab';
@@ -125,7 +123,7 @@ function TabPanel(props) {
             )}
             {value === index && value === 2 && (
                 <>
-                    <ChartTab stock_data={children}></ChartTab>    
+                    <ChartTab stock_data={children} ></ChartTab>    
                 </>
             )}
         </div>

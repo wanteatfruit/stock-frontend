@@ -1,13 +1,10 @@
 import * as React from 'react';
 import { useTheme } from '@mui/material/styles';
 import { LineChart, Line, XAxis, YAxis, Label, ResponsiveContainer, Tooltip, Brush } from 'recharts';
-import { Button, ButtonGroup, createTheme } from '@mui/material';
+import { Button, ButtonGroup, createTheme, Typography } from '@mui/material';
 import Stack from '@mui/material/Stack';
 import ToggleButton from '@mui/material/ToggleButton';
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
-import { func } from 'prop-types';
-import useSWR from 'swr';
-import axios from 'axios';
 
 
 //change data range
@@ -21,21 +18,6 @@ function changeData(range) {
             return oneYearData
         case 'fiveYear':
             return fiveYearData
-    }
-}
-
-//change stock name
-function changeStock(stock) {
-    console.log(stock)
-    if (stock === null) {
-        return null
-    }
-    switch (stock.name) {
-        
-        case 'AAPL':
-            return data
-        case '000123':
-            return oneMonthData
     }
 }
 
@@ -69,7 +51,7 @@ export default function Chart({stock_data}) {
 
     return (
         <React.Fragment>
-            {/* <Title>Today</Title> */}
+            <Typography>Title</Typography>
             <Stack direction="row" spacing={4}>
                 <ToggleButtonGroup
                     value={range}
