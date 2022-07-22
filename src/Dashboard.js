@@ -27,7 +27,7 @@ import parse from 'autosuggest-highlight/parse';
 import match from 'autosuggest-highlight/match';
 import Tab from '@mui/material/Tab';
 import ChartTab from './ChartTab.js';
-import SpeedDialComp from './SpeedDial.js';
+import axios from 'axios';
 import StockTable from './StockTable.js';
 import TrendingUpIcon from '@mui/icons-material/TrendingUp';
 import TableChartIcon from '@mui/icons-material/TableChart';
@@ -115,7 +115,7 @@ function TabPanel(props) {
         >
             {value === index && value=== 0 && (
                 <Box sx={{ p: 3 }}>
-                    <StockTable stock_name={children} />
+                    <StockTable stock_data={children} />
                 </Box>
             )}
             {value === index && value === 1 && (
@@ -125,7 +125,7 @@ function TabPanel(props) {
             )}
             {value === index && value === 2 && (
                 <>
-                    <ChartTab stock_name={children}></ChartTab>    
+                    <ChartTab stock_data={children}></ChartTab>    
                 </>
             )}
         </div>
@@ -156,7 +156,7 @@ function DashboardContent() {
     }
 
     // states of auto complete, store a stock list in front end
-    const [stockName, setStockName] = React.useState(stocks[0])
+    const [stockName, setStockName] = React.useState(stocks[2])
     const onValueChanged = (event, newStock) => {
         setStockName(newStock)
     }
@@ -166,6 +166,20 @@ function DashboardContent() {
     const handleTabChange = (event, newValue) => {
         setTabValue(newValue)
     }
+
+    const [stockData, setData] = React.useState()
+
+    React.useEffect(() => {
+        console.log(stockName)
+        var url = new URL("http://127.0.0.1:8000/stocks")
+        axios.get(url.href + '/' + stockName.name).then((res) => {
+            console.log(res.data)
+            setData(res.data)
+            console.log(typeof stockData) //undefined
+            console.log(typeof {stockData}) //object
+        })
+    }, [stockName]) //triggers when stockName/range changes
+
 
     return (
         <ThemeProvider theme={dashTheme}>
@@ -261,13 +275,13 @@ function DashboardContent() {
                             </Tabs>
                         </Box>
                         <TabPanel value={tabValue} index={0}>
-                            {stockName}
+                            {stockData}
                         </TabPanel>
                         <TabPanel value={tabValue} index={1}>
                             Item Two
                         </TabPanel>
                         <TabPanel value={tabValue} index={2}>
-                            {stockName}
+                            {stockData}
                         </TabPanel>
                     </Box>
                     

@@ -9,40 +9,6 @@ import { func } from 'prop-types';
 import useSWR from 'swr';
 import axios from 'axios';
 
-// Generate Sales Data
-function createData(time, amount) {
-    return { time, amount };
-}
-
-const data = [
-    createData('00:00', 0),
-    createData('03:00', 300),
-    createData('06:00', 600),
-    createData('09:00', 800),
-    createData('12:00', 1500),
-    createData('15:00', 2000),
-    createData('18:00', 2400),
-    createData('21:00', 2400),
-    createData('24:00', 1200),
-];
-
-const oneMonthData = [
-    createData('1', 0),
-    createData('2', 1),
-    createData('3', 3600),
-    createData('4', 400)
-]
-
-const oneYearData = [
-    createData('1001', 1),
-    createData('1002', 2)
-]
-
-const fiveYearData = [
-    createData('1001', 1),
-    createData('1002', 2)
-]
-
 
 //change data range
 function changeData(range) {
@@ -74,7 +40,7 @@ function changeStock(stock) {
 }
 
 
-export default function Chart({stock_name}) {
+export default function Chart({stock_data}) {
     const chartTheme = createTheme({
         palette: {
             type: 'light',
@@ -99,20 +65,8 @@ export default function Chart({stock_name}) {
         }
     }
 
-    const stock = stock_name
-    const stockName = stock_name.name
+    const stockData = stock_data
 
-    //get from backend
-    const [stockData, setData] = React.useState()
-    React.useEffect(() => {
-        console.log(stockName)
-        var url = new URL("http://127.0.0.1:8000/stocks")
-        
-        axios.get(url.href+'/'+stockName).then((res) => {
-            console.log(res.data)
-            setData(res.data)
-        })
-    },[stock_name]) //triggers when stockName/range changes
     return (
         <React.Fragment>
             {/* <Title>Today</Title> */}

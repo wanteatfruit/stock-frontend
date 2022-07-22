@@ -6,7 +6,7 @@ import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
 import Chart from './Chart.js';
 
-export default function ChartTab({stock_name}) {
+export default function ChartTab({stock_data}) {
     return (
         <Box
             sx={{
@@ -31,7 +31,7 @@ export default function ChartTab({stock_name}) {
                             
                         >
 
-                            <Chart stock_name={stock_name}></Chart>
+                            <Chart stock_data={stock_data}></Chart>
                         </Paper>
                     </Grid>
                     {/* Recent Deposits */}

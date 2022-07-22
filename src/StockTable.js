@@ -13,22 +13,16 @@ const rows = [
 ]
 
 
-export default function StockTable({ stock_name }) {
+export default function StockTable({ stock_data }) {
 
-    const stockName = { stock_name }
-    const [data, setData] = React.useState()
-    React.useEffect(() => {
-        axios.get('http://127.0.0.1:8000/stocks/').then((res => {
-            console.log(res.data)
-            setData(res.data)
-        }))
-    },[])
+    const stockData =  stock_data
+    console.log(stockData)
 
     return (
         <div style={{width:'100%',height:500, display:'flex',}}>
             <DataGrid
                 getRowId={(row)=>row.current_date}
-                rows={(data===undefined?rows:data)}
+                rows={(stockData===undefined?rows:stockData)}
                 columns={columns}
                 rowHeight={38}
                 rowsPerPageOptions={[20, 100, 500]}
