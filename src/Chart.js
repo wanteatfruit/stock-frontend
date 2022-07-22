@@ -8,18 +8,7 @@ import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 
 
 //change data range
-function changeData(range) {
-    switch (range) {
-        case 'oneWeek':
-            return data
-        case 'oneMonth':
-            return oneMonthData
-        case 'oneYear':
-            return oneYearData
-        case 'fiveYear':
-            return fiveYearData
-    }
-}
+
 
 
 export default function Chart({stock_data}) {
@@ -49,6 +38,19 @@ export default function Chart({stock_data}) {
 
     const stockData = stock_data
 
+    function changeData(range,data) {
+        switch (range) {
+            case 'oneWeek':
+                return data.slice(-8,-1)
+            case 'oneMonth':
+                return data.slice(-32,-1)
+            case 'oneYear':
+                return data.slice(-366,-1)
+            case 'fiveYears':
+                return data
+        }
+    }
+
     return (
         <React.Fragment>
             <Typography>Title</Typography>
@@ -77,7 +79,7 @@ export default function Chart({stock_data}) {
             </Stack>
             <ResponsiveContainer>
                 <LineChart
-                    data={stockData}
+                    data={changeData(range,stock_data)}
                     margin={{
                         top: 16,
                         right: 16,
