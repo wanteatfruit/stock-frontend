@@ -1,28 +1,67 @@
-// import { CheckBox } from '@mui/icons-material'
-// import { Button, createTheme, SpeedDial, ThemeProvider } from '@mui/material'
-// import { Container } from '@mui/system'
-// import Head from 'next/head'
-// import Image from 'next/image'
-// // import Dashboard from '../src/dashboard'
-// import { theme } from '../src/theme'
-// import dynamic from 'next/dynamic'
-// import { Suspense } from 'react'
-// import SpeedDialComp from '../src/SpeedDial'
 
-import { Link } from "@mui/material";
-import StockTable from "../src/StockTable";
-
-// const DynamicHeader = dynamic(() => import('../src/Dashboard'), {
-//   suspense: true,
-// })
-
+import Head from 'next/head'
+import { Link,Box, Typography, CssBaseline, Grid,Container,Stack,Button, createTheme, Divider } from "@mui/material";
+import { styled } from "@mui/system";
+import { Suspense } from "react";
+import { ThemeProvider } from '@emotion/react';
+import { NextLinkComposed } from '../src/Link.tsx';
 
 export default function Home() {
+
+  const homeTheme = createTheme(
+    {
+      typography: {
+        fontFamily: [
+          'Montserrat'
+        ]
+      }
+    }
+  )
   return (
-    <>
-      <StockTable />
-      <Link href="/stocks" >link</Link>
-      </>
+
+    <Suspense>
+      <ThemeProvider theme={homeTheme}>
+      <Head>
+        <title>Homepage</title>
+      </Head>
+      <Box
+        sx={{
+          bgcolor: 'background.paper',
+          pt: 14,
+          pb: 6,
+        }}
+      >
+        
+        <Container maxWidth="md">
+          <Typography
+            variant="h1"
+            align="center"
+            gutterBottom
+              fontWeight='bold'
+              sx={{
+                background: "linear-gradient(45deg, #A22FCE, #FF7000)",
+                backgroundClip: 'text',
+                WebkitTextFillColor: 'transparent'
+              }}
+          >
+            Stock Price Predictions
+          </Typography>
+          <Typography variant="h5" align="center" color="text.secondary" paragraph>
+            Maybe some brief introduction of our project
+          </Typography>
+            <Stack
+              divider={<Divider flexItem/>}
+            sx={{ pt: 4,  }}
+            spacing={2}
+              alignItems='center'
+          >
+            <Button component={NextLinkComposed} to={{pathname:'/stocks'}} variant="contained">Go!</Button>
+            <Button variant="outlined">Maybe other stuff</Button>
+          </Stack>
+        </Container>
+        </Box>
+      </ThemeProvider>
+    </Suspense>
   )
 }
 

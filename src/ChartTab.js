@@ -11,20 +11,21 @@ export default function ChartTab({stock_name}) {
         <Box
             sx={{
                 flexGrow: 1,
-                height: '100vh',
+                height: '100%',
+                width:'100%',
                 overflow: 'auto',
             }}
         >
-            <Toolbar />
-            <Container maxWidth="lg" sx={{ mt: 2, mb: 4 }}>
+            <Container  sx={{ mt: 4, mb: 4 }}>
                 <Grid container spacing={3}>
                     <Grid item xs={12} lg={12}>
                         <Paper
+                            variant='outlined'
                             sx={{
                                 p: 2,
                                 display: 'flex',
                                 flexDirection: 'column',
-                                height: 300
+                                height: 400
                             }}
                             
                         >

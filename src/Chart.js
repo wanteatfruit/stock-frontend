@@ -174,7 +174,7 @@ export default function Chart({stock_name}) {
                         type="linear"
                         dataKey="price"
                         stroke={chartTheme.palette.primary.main}
-                        activeDot={{r:8}}
+                        dot={false}
                     />
                 </LineChart>
             </ResponsiveContainer>

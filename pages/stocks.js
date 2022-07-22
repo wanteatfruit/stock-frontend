@@ -1,5 +1,5 @@
 import { CheckBox } from '@mui/icons-material'
-import { Button, createTheme, SpeedDial, ThemeProvider } from '@mui/material'
+import { Button, CircularProgress, createTheme, SpeedDial, ThemeProvider } from '@mui/material'
 import { Container } from '@mui/system'
 import Head from 'next/head'
 import Image from 'next/image'
@@ -16,8 +16,10 @@ const DynamicHeader = dynamic(() => import('../src/Dashboard'), {
 
 export default function Home() {
     return (
-        <Suspense fallback={'Loading...'}>
-
+        <Suspense fallback={<CircularProgress></CircularProgress>}>
+            <Head>
+                <title>Stock</title>
+            </Head>
             <DynamicHeader />
 
         </Suspense>

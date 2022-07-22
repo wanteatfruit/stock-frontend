@@ -30,7 +30,9 @@ import Tab from '@mui/material/Tab';
 import ChartTab from './ChartTab.js';
 import SpeedDialComp from './SpeedDial.js';
 import StockTable from './StockTable.js';
-
+import TrendingUpIcon from '@mui/icons-material/TrendingUp';
+import TableChartIcon from '@mui/icons-material/TableChart';
+import BarChartIcon from '@mui/icons-material/BarChart';
 
 const dashTheme = createTheme({
     palette: {
@@ -92,31 +94,31 @@ const drawerWidth = 240;
 // }));
 
 
-const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' })(
-    ({ theme, open }) => ({
-        '& .MuiDrawer-paper': {
-            position: 'relative',
-            whiteSpace: 'nowrap',
-            width: drawerWidth,
-            transition: theme.transitions.create('width', {
-                easing: theme.transitions.easing.sharp,
-                duration: theme.transitions.duration.enteringScreen,
-            }),
-            boxSizing: 'border-box',
-            ...(!open && {
-                overflowX: 'hidden',
-                transition: theme.transitions.create('width', {
-                    easing: theme.transitions.easing.sharp,
-                    duration: theme.transitions.duration.leavingScreen,
-                }),
-                width: theme.spacing(7),
-                [theme.breakpoints.up('sm')]: {
-                    width: theme.spacing(9),
-                },
-            }),
-        },
-    }),
-);
+// const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' })(
+//     ({ theme, open }) => ({
+//         '& .MuiDrawer-paper': {
+//             position: 'relative',
+//             whiteSpace: 'nowrap',
+//             width: drawerWidth,
+//             transition: theme.transitions.create('width', {
+//                 easing: theme.transitions.easing.sharp,
+//                 duration: theme.transitions.duration.enteringScreen,
+//             }),
+//             boxSizing: 'border-box',
+//             ...(!open && {
+//                 overflowX: 'hidden',
+//                 transition: theme.transitions.create('width', {
+//                     easing: theme.transitions.easing.sharp,
+//                     duration: theme.transitions.duration.leavingScreen,
+//                 }),
+//                 width: theme.spacing(7),
+//                 [theme.breakpoints.up('sm')]: {
+//                     width: theme.spacing(9),
+//                 },
+//             }),
+//         },
+//     }),
+// );
 
 
 // tabs
@@ -133,7 +135,7 @@ function TabPanel(props) {
         >
             {value === index && value=== 0 && (
                 <Box sx={{ p: 3 }}>
-                    <StockTable />
+                    <StockTable stock_name={children} />
                 </Box>
             )}
             {value === index && value === 1 && (
@@ -163,23 +165,18 @@ function a11yProps(index) {
     };
 }
 
-
-
 function DashboardContent() {
     // states of side drawer
     const [open, setOpen] = React.useState(false);
-
     const handleClose = () => {
         setOpen(false)
     }
-
     const handleOpen = () => {
         setOpen(true)
     }
 
     // states of auto complete, store a stock list in front end
     const [stockName, setStockName] = React.useState(stocks[0])
-
     const onValueChanged = (event, newStock) => {
         setStockName(newStock)
     }
@@ -268,13 +265,13 @@ function DashboardContent() {
                         <Box sx={{ width: '100%', pl:2, pr:2}}>
                         <Box sx={{ borderBottom: 1, borderColor: 'divider',pl:4 }}>
                             <Tabs value={tabValue} onChange={handleTabChange}>
-                                <Tab label="Stock Data Table" {...a11yProps(0)} />
-                                <Tab label="Item Two" {...a11yProps(1)} />
-                                <Tab label="Stock Chart" {...a11yProps(2)} />
+                                <Tab icon={<TableChartIcon />} label="Data Table" {...a11yProps(0)} />
+                                <Tab icon={<BarChartIcon />} label="Other stuff" {...a11yProps(1)} />
+                                <Tab icon={<TrendingUpIcon /> } label="Stock Chart" {...a11yProps(2)} />
                             </Tabs>
                         </Box>
                         <TabPanel value={tabValue} index={0}>
-                            Item One
+                            {stockName}
                         </TabPanel>
                         <TabPanel value={tabValue} index={1}>
                             Item Two
@@ -313,6 +310,8 @@ function DashboardContent() {
         </ThemeProvider>
     );
 }
+
+//maintain a list of available stocks
 const stocks = [{id:1, name: 'AAPL', market: 'NASDAQ' },
     { id:2, name: '000123', market: 'SSE' }]
 
