@@ -4,29 +4,65 @@ import Toolbar from '@mui/material/Toolbar';
 import Container from '@mui/material/Container';
 import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
-import Chart from './Chart.js';
+import SChart from './Chart.js';
 import { Card, CardContent, Typography } from '@mui/material';
 import { Area, Line, XAxis, YAxis, Label, ResponsiveContainer, Tooltip, Brush, AreaChart, LineChart, CartesianGrid, Legend, BarChart, Bar, ComposedChart } from 'recharts';
-
+import { Chart } from "react-google-charts";
 
 
 export default function ChartTab({ stock_data, stock_name }) {
+    const [candle_data, setCandle] = React.useState()
+    React.useEffect(() => {
+        var tmp=[["Date", "Low", "Open", "Close", "High"]]
+        for (let index = 1230; index < stock_data.length-8; index++) {
+            const element = stock_data[index];
+            var cur = []
+            cur.push(element.Date)
+            cur.push(Number(element.Low))
+            console.log(typeof Number(element.Low))
+            cur.push(Number(element.Open))
+            cur.push(Number(element.Close))
+            cur.push(Number(element.High))
+            tmp.push(cur)
+        }
+        setCandle(tmp)
+        console.log(stock_data)
+    },[stock_data])
+
+    const options = {
+        animation: {
+            startup: 'true',
+        },
+        legend: 'none',
+        bar: { groupWidth: "100%" },
+        vAxis: {
+            viewWindowMode:'maximized'
+        },
+        hAxis: {
+            format: 'MMM d, y'
+        },
+        candlestick: {
+            fallingColor: { strokeWidth: 0, fill: "#a52714" }, // red
+            risingColor: { strokeWidth: 0, fill: "#0f9d58" }, // green
+        },
+    }
+
     return (
         <Box
             sx={{
                 flexGrow: 1,
                 height: '100vh',
-                width:'100%',
-                display:'flex',
+                width: '100%',
+                display: 'flex',
                 pt: 2,
-                px:4
+                px: 4
             }}
         >
-            
-                <Grid container spacing={2} sx={{px:6 ,pt:2}}>
-                    <Grid item xs={12}>
-                        <Paper
-                            // variant='outlined'
+
+            <Grid container spacing={2} sx={{ px: 6, pt: 2 }}>
+                <Grid item xs={12}>
+                    <Paper
+                        // variant='outlined'
                         sx={{
                             p: 1,
                             display: 'flex',
@@ -36,14 +72,43 @@ export default function ChartTab({ stock_data, stock_name }) {
                             border: 'transparent'
                         }}
                         elevation={2}
-                        >
-                            <Chart stock_data={stock_data} stock_name={"Data Visualization"}> </Chart>
-                        </Paper>
-                    </Grid>
-                    
+                    >
+                        <Box
+                            sx={{
+                                pl: 3,
+                                margin: '0 auto'
+                            }}>
+                            <Typography variant='h6'>Candlestick Chart</Typography>
+                        </Box>
+                        <Chart
+                            chartType="CandlestickChart"
+                            width="100%"
+                            height="400px"
+                            data={candle_data}
+                            options={options}
+                        />
+                    </Paper>
+                </Grid>
+                <Grid item xs={12}>
+                    <Paper
+                        // variant='outlined'
+                        sx={{
+                            p: 1,
+                            display: 'flex',
+                            flexDirection: 'column',
+                            height: 450,
+                            width: '100%',
+                            border: 'transparent'
+                        }}
+                        elevation={2}
+                    >
+                        <SChart stock_data={stock_data} stock_name={"Data Visualization"}> </SChart>
+                    </Paper>
+                </Grid>
+
 
                 <Grid item xs={6}>
-                    
+
                     <Paper sx={{
                         p: 1,
                         display: 'flex',
@@ -51,7 +116,7 @@ export default function ChartTab({ stock_data, stock_name }) {
                         height: 375,
                         width: '100%',
                         border: 'transparent'
-                        
+
                     }}
                         elevation={2}>
                         <Box
@@ -63,7 +128,7 @@ export default function ChartTab({ stock_data, stock_name }) {
                         </Box>
                         <ResponsiveContainer>
                             <LineChart
-                                data={stock_data.slice(-31,-1)}
+                                data={stock_data.slice(-31, -1)}
                                 margin={{
                                     top: 16,
                                     right: 16,
@@ -73,10 +138,10 @@ export default function ChartTab({ stock_data, stock_name }) {
                             >
                                 <CartesianGrid strokeDasharray="3 3" />
                                 <XAxis
-                                    dataKey="Date"                                
+                                    dataKey="Date"
                                 />
                                 <YAxis
-                                    domain={['auto', 'dataMax']}                                                                  
+                                    domain={['auto', 'dataMax']}
                                 >
                                 </YAxis>
                                 <Tooltip />
@@ -84,16 +149,16 @@ export default function ChartTab({ stock_data, stock_name }) {
                                 <Line
                                     isAnimationActive={true}
                                     type="linear"
-                                    dataKey="Predicted"                                  
+                                    dataKey="Predicted"
                                     dot={true}
                                 />
                             </LineChart>
 
                         </ResponsiveContainer>
                     </Paper>
-                    
+
                 </Grid>
-                <Grid item xs={6} sx={{ }}>
+                <Grid item xs={6} sx={{}}>
 
                     <Paper sx={{
                         p: 1,
@@ -111,9 +176,10 @@ export default function ChartTab({ stock_data, stock_name }) {
                             }}>
                             <Typography variant='h6'>Sentiment Data</Typography>
                         </Box>
+
                         <ResponsiveContainer>
                             <ComposedChart
-                                data={stock_data.slice(-38, -7)}
+                                data={stock_data.slice(-22, -7)}
                                 margin={{
                                     top: 16,
                                     right: 16,
@@ -130,11 +196,10 @@ export default function ChartTab({ stock_data, stock_name }) {
                                 >
                                 </YAxis>
                                 <Tooltip />
-                                
+
                                 <Legend />
-                                <Bar dataKey="Close" fill='#8884d8' />
-                                <Bar dataKey="Open" fill='#82ca9d' />
-                                <Line dataKey="High" stroke="#ff7300" />
+                                <Bar dataKey="Positive" fill='green' />
+                                <Bar dataKey="Negative" fill='red' />
                                 
                             </ComposedChart>
 
@@ -147,7 +212,7 @@ export default function ChartTab({ stock_data, stock_name }) {
                             <Typography variant='h5'>Close</Typography>
                         </CardContent>
                         <CardContent>
-                            {stock_data[stock_data.length-8].Close}
+                            {stock_data[stock_data.length - 8].Close}
                         </CardContent>
                     </Card>
                 </Grid>
@@ -171,7 +236,7 @@ export default function ChartTab({ stock_data, stock_name }) {
                         </CardContent>
                     </Card>
                 </Grid>
-                <Grid item xs={3} sx={{pb:6}}>
+                <Grid item xs={3} sx={{ pb: 6 }}>
                     <Card>
                         <CardContent>
                             <Typography variant='h5'>Predicted (Open)</Typography>
