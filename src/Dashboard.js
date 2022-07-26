@@ -1,5 +1,4 @@
 import * as React from 'react';
-import PropTypes from 'prop-types';
 import { styled, createTheme, ThemeProvider, alpha } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import MuiDrawer from '@mui/material/Drawer';
@@ -16,11 +15,8 @@ import Paper from '@mui/material/Paper';
 import MenuIcon from '@mui/icons-material/Menu';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import NotificationsIcon from '@mui/icons-material/Notifications';
-// import { mainListItems, secondaryListItems } from './listItems';
 import Chart from './Chart.js';
-// import theme from './theme.js';
-import { AppBar, Autocomplete, Button, ButtonGroup, Icon, ListItem, ListItemText, Tabs, TextField } from '@mui/material';
-import SearchAppBar from './TopAppBar.js';
+import { AppBar, Autocomplete, Checkbox,Button, ButtonGroup, Icon, ListItem, ListItemText, Tabs, TextField, Fade } from '@mui/material';
 import parse from 'autosuggest-highlight/parse';
 import match from 'autosuggest-highlight/match';
 import Tab from '@mui/material/Tab';
@@ -29,8 +25,114 @@ import axios from 'axios';
 import StockTable from './StockTable.js';
 import TrendingUpIcon from '@mui/icons-material/TrendingUp';
 import TableChartIcon from '@mui/icons-material/TableChart';
-import BarChartIcon from '@mui/icons-material/BarChart';
+import Comparison from './ComparisonTab.js';
 import KeyboardBackspaceIcon from '@mui/icons-material/KeyboardBackspace';
+import CompareIcon from '@mui/icons-material/Compare';
+import GitHubIcon from '@mui/icons-material/GitHub';
+export const stocks = [{ id: 1, name: 'AAPL', market: 'DOW50' },
+{ id: 2, name: 'ABBV', market: 'DOW50' },
+// { id: 3, name: 'ABI', market: 'DOW50' },
+{ id: 4, name: 'ALV', market: 'DOW50' },
+{ id: 5, name: 'AMGN', market: 'DOW50' },
+{ id: 6, name: 'AMZN', market: 'DOW50' },
+{ id: 7, name: 'BATS', market: 'DOW50' },
+{ id: 8, name: 'BA', market: 'DOW50' },
+{ id: 9, name: 'BHP', market: 'DOW50' },
+{ id: 10, name: 'BP', market: 'DOW50' },
+{ id: 11, name: 'CSCO', market: 'DOW50' },
+{ id: 12, name: 'CVX', market: 'DOW50' },
+{ id: 13, name: 'C', market: 'DOW50' },
+{ id: 14, name: 'DD', market: 'DOW50' },
+{ id: 15, name: 'DIS', market: 'DOW50' },
+{ id: 16, name: 'GE', market: 'DOW50' },
+{ id: 17, name: 'GOOG', market: 'DOW50' },
+{ id: 18, name: 'GSK', market: 'DOW50' },
+{ id: 19, name: 'HSBA', market: 'DOW50' },
+{ id: 20, name: 'IBM', market: 'DOW50' },
+{ id: 21, name: 'INTC', market: 'DOW50' },
+{ id: 22, name: 'JNJ', market: 'DOW50' },
+{ id: 23, name: 'JPM', market: 'DOW50' },
+{ id: 24, name: 'KO', market: 'DOW50' },
+{ id: 25, name: 'MA', market: 'DOW50' },
+{ id: 26, name: 'MCD', market: 'DOW50' },
+{ id: 27, name: 'META', market: 'DOW50' },
+{ id: 28, name: 'MRK', market: 'DOW50' },
+{ id: 29, name: 'MSFT', market: 'DOW50' },
+{ id: 30, name: 'NESN', market: 'DOW50' },
+{ id: 31, name: 'NOVN', market: 'DOW50' },
+{ id: 32, name: 'NVDA', market: 'DOW50' },
+{ id: 33, name: 'ORCL', market: 'DOW50' },
+{ id: 34, name: 'PEP', market: 'DOW50' },
+{ id: 35, name: 'PFE', market: 'DOW50' },
+{ id: 36, name: 'PG', market: 'DOW50' },
+{ id: 37, name: 'PM', market: 'DOW50' },
+{ id: 38, name: 'ROG', market: 'DOW50' },
+{ id: 39, name: 'RY', market: 'DOW50' },
+{ id: 40, name: 'SAN', market: 'DOW50' },
+{ id: 41, name: 'SHEL', market: 'DOW50' },
+{ id: 42, name: 'SIE', market: 'DOW50' },
+{ id: 43, name: 'SMSN', market: 'DOW50' },
+{ id: 44, name: 'TM', market: 'DOW50' },
+{ id: 45, name: 'TSM', market: 'DOW50' },
+{ id: 46, name: 'TTE', market: 'DOW50' },
+{ id: 47, name: 'V', market: 'DOW50' },
+{ id: 48, name: 'WMT', market: 'DOW50' },
+{ id: 49, name: 'XOM', market: 'DOW50' },
+{ id: 50, name: 'MMM', market: 'DOW50' },
+    { id: 51, name: 'PFYH_600000', market: 'SSE50' },
+    { id: 52, name: 'MSYH_600016', market: 'SSE50' },
+    { id: 53, name: 'BGGF_600019', market: 'SSE50' },
+    { id: 54, name: 'ZGSH_600028', market: 'SSE50' },
+    { id: 55, name: 'NFHK_600029', market: 'SSE50' },
+    { id: 56, name: 'ZXZQ_600031', market: 'SSE50' },
+    { id: 57, name: 'ZSYH_600036', market: 'SSE50' },
+    { id: 58, name: 'BLFZ_600048', market: 'SSE50' },
+    { id: 59, name: 'ZGLT_600050', market: 'SSE50' },
+    { id: 60, name: 'SQJT_600104', market: 'SSE50' },
+    { id: 61, name: 'FXYY_600196', market: 'SSE50' },
+    { id: 62, name: 'HRYY_600276', market: 'SSE50' },
+    { id: 63, name: 'WHHX_600309', market: 'SSE50' },
+    { id: 64, name: 'HXXF_600340', market: 'SSE50' },
+    { id: 65, name: 'GZMT_600519', market: 'SSE50' },
+    { id: 66, name: 'HLSN_600585', market: 'SSE50' },
+    { id: 67, name: 'HEZJ_600690', market: 'SSE50' },
+    { id: 68, name: 'SAGD_600703', market: 'SSE50' },
+    { id: 69, name: 'HTZQ_600837', market: 'SSE50' },
+    { id: 70, name: 'YLGF_600887', market: 'SSE50' },
+    { id: 71, name: 'ZXJT_601066', market: 'SSE50' },
+    { id: 72, name: 'ZGSH_601088', market: 'SSE50' },
+    { id: 73, name: 'ZGGH_601111', market: 'SSE50' },
+    { id: 74, name: 'GYFL_601138', market: 'SSE50' },
+    { id: 75, name: 'XYYH_601166', market: 'SSE50' },
+    { id: 76, name: 'ZGTJ_601186', market: 'SSE50' },
+    { id: 77, name: 'GTJA_601211', market: 'SSE50' },
+    { id: 78, name: 'SHYH_601229', market: 'SSE50' },
+    { id: 79, name: 'NYYH_601288', market: 'SSE50' },
+    { id: 80, name: 'ZGPA_601318', market: 'SSE50' },
+    { id: 81, name: 'ZGRB_601319', market: 'SSE50' },
+    { id: 82, name: 'JTYH_601328', market: 'SSE50' },
+    { id: 83, name: 'XHBX_601336', market: 'SSE50' },
+    { id: 84, name: 'ZGZT_601390', market: 'SSE50' },
+    { id: 85, name: 'GSYH_601398', market: 'SSE50' },
+    { id: 86, name: 'ZGTB_601601', market: 'SSE50' },
+    { id: 87, name: 'ZGRS_601628', market: 'SSE50' },
+    { id: 88, name: 'ZGJZ_601668', market: 'SSE50' },
+    { id: 89, name: 'HTZQ_601688', market: 'SSE50' },
+    { id: 90, name: 'ZGZC_601766', market: 'SSE50' },
+    { id: 91, name: 'ZGJJ_601800', market: 'SSE50' },
+    { id: 92, name: 'GDYH_601818', market: 'SSE50' },
+    { id: 93, name: 'ZGSY_601857', market: 'SSE50' },
+    { id: 94, name: 'ZGGL_601888', market: 'SSE50' },
+    { id: 95, name: 'JSYH_601939', market: 'SSE50' },
+    { id: 96, name: 'ZGYH_601988', market: 'SSE50' },
+    { id: 97, name: 'ZGZG_601989', market: 'SSE50' },
+    { id: 98, name: 'YMKD_603259', market: 'SSE50' },
+    { id: 99, name: 'LYMY_603993', market: 'SSE50' },
+]
+
+const sse = [
+]
+
 const dashTheme = createTheme({
     palette: {
         type: 'light',
@@ -72,32 +174,7 @@ const dashTheme = createTheme({
 
 const drawerWidth = 240;
 
-// const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' })(
-//     ({ theme, open }) => ({
-//         '& .MuiDrawer-paper': {
-//             position: 'relative',
-//             whiteSpace: 'nowrap',
-//             width: drawerWidth,
-//             transition: theme.transitions.create('width', {
-//                 easing: theme.transitions.easing.sharp,
-//                 duration: theme.transitions.duration.enteringScreen,
-//             }),
-//             boxSizing: 'border-box',
-//             ...(!open && {
-//                 overflowX: 'hidden',
-//                 transition: theme.transitions.create('width', {
-//                     easing: theme.transitions.easing.sharp,
-//                     duration: theme.transitions.duration.leavingScreen,
-//                 }),
-//                 width: theme.spacing(7),
-//                 [theme.breakpoints.up('sm')]: {
-//                     width: theme.spacing(9),
-//                 },
-//             }),
-//         },
-//     }),
-// );
-
+const fixedOptions = [];
 
 // tabs
 function TabPanel(props) {
@@ -117,24 +194,17 @@ function TabPanel(props) {
                 </Box>
             )}
             {value === index && value === 1 && (
-                <Box sx={{ p: 3 }}>
-                    <Typography>{children}</Typography>
-                </Box>
+                
+                    <ChartTab stock_data={children} ></ChartTab>  
+                    
             )}
             {value === index && value === 2 && (
-                <>
-                    <ChartTab stock_data={children} ></ChartTab>    
-                </>
+               <Comparison stock_list={children} />
             )}
         </div>
     );
 }
 
-// TabPanel.propTypes = {
-//     children: PropTypes.node,
-//     index: PropTypes.number.isRequired,
-//     value: PropTypes.number.isRequired,
-// };
 
 function a11yProps(index) {
     return {
@@ -154,13 +224,17 @@ function DashboardContent() {
     }
 
     // states of auto complete, store a stock list in front end
-    const [stockName, setStockName] = React.useState(stocks[2])
+    const [stockName, setStockName] = React.useState(stocks[0])
     const onValueChanged = (event, newStock) => {
         setStockName(newStock)
     }
 
+    // states of selected stocks for comparison
+    const [checked, setChecked] = React.useState([])
+
+
     // states of tab
-    const [tabValue, setTabValue] = React.useState(2)
+    const [tabValue, setTabValue] = React.useState(0)
     const handleTabChange = (event, newValue) => {
         setTabValue(newValue)
     }
@@ -168,11 +242,12 @@ function DashboardContent() {
     const [stockData, setData] = React.useState()
 
     React.useEffect(() => {
-        console.log(stockName)
+        // console.log(stockName)
         var url = new URL("http://127.0.0.1:8000/stocks")
         axios.get(url.href + '/' + stockName.name).then((res) => {
-            console.log(res.data)
+            // console.log(res.data)
             setData(res.data)
+            console.log(checked)
             console.log(typeof stockData) //undefined
             console.log(typeof {stockData}) //object
         })
@@ -181,22 +256,12 @@ function DashboardContent() {
 
     return (
         <ThemeProvider theme={dashTheme}>
-            <Box sx={{ display: 'flex' }}>
+            <Box sx={{ display: 'flex'}}>
                 
                 <CssBaseline />
                 
-                <AppBar position='fixed' color='inherit' >
+                <AppBar position='fixed' color='inherit' sx={{overflow:'hidden'}} elevation={1} >
                     <Toolbar>
-                        <IconButton
-                            size='large'
-                            edge='start'
-                            color='inherit'
-                            aria-label='open drawer'
-                            sx={{ mr: 2 }}
-                            onClick={handleOpen}
-                        >
-                            <MenuIcon />
-                        </IconButton>
                         <IconButton
                             size='large'
                             edge='start'
@@ -206,13 +271,22 @@ function DashboardContent() {
                         >
                             <KeyboardBackspaceIcon />
                         </IconButton>
+                        <IconButton
+                            size='large'
+                            edge='start'
+                            color='inherit'
+                            sx={{ mr: 2 }}
+                            href='https://github.com/Red-Nova/NASDAQ-SSE-ML-Stock-Predictions'
+                        >
+                            <GitHubIcon />
+                        </IconButton>
                         <Typography
                             variant="h6"
                             noWrap
                             component="div"
                             sx={{ flexGrow: 1, display: { xs: 'none', sm: 'block' } }}
                         >
-                            Stocks Dashboard
+                            Global Stock Database
                         </Typography>
                         {/* options attribute use 'label' atrribute in .json 
                             or 1-D array elements. use getOptionLabel to customize option structrue.
@@ -223,17 +297,17 @@ function DashboardContent() {
                             options={stocks}
                             value={stockName}
                             onChange={onValueChanged}
-                            size='small'
+                            disableClearable
                             blurOnSelect
                             renderInput={(params) => <TextField {...params}
-                                label="Stocks"
+                                label="Choose one to view..."
                                 sx={{ width: 300 }}
                                 variant='standard' />}
                             sx={{
-
                                 padding: dashTheme.spacing(1, 1, 1, 0),
                                 [dashTheme.breakpoints.up('sm')]: {
                                     marginLeft: dashTheme.spacing(1),
+                                    marginRight: dashTheme.spacing(1),
                                     width: 'auto',
                                 },
                             }}
@@ -259,67 +333,59 @@ function DashboardContent() {
                             }}
                         >
                         </Autocomplete>
+                        <Autocomplete
+                            multiple disableCloseOnSelect
+                            limitTags={2}
+                            value={checked}
+                            onChange={(event, value) => {
+                                if (value.length <= 3) {
+                                    setChecked(value)
+                                }
+                            
+                            }}
+                            id="multiple-limit-tags"
+                            size='medium'
+                            options={stocks}
+                            getOptionLabel={(option) => option.name}
+                            groupBy={(option) => option.market}
+                            renderInput={(params) => (
+                                <TextField {...params} variant='standard' label="...or compare up to 3 stocks"  />
+                            )}
+                            sx={{ width: 300 }}
+                        />
                     </Toolbar>
 
                 </AppBar>
-                <AppBar elevation={false} position='fixed' color='inherit' sx={{ display: 'flex', mt: '65px',}}>
+                <AppBar elevation={false} position='relative' color='inherit' sx={{  mt: '65px',}}>
                     
-                        <Box sx={{ width: '100%', pl:2, pr:2}}>
-                        <Box sx={{ borderBottom: 1, borderColor: 'divider',pl:4 }}>
+                    <Box sx={{ width: '100%', pl:2, pr:2, height:'100vh', }}>
+                        <Box sx={{ borderBottom: 1, borderColor: 'divider',pl:4, }}>
                             <Tabs value={tabValue} onChange={handleTabChange}>
                                 <Tab icon={<TableChartIcon />} label="Data Table" {...a11yProps(0)} />
-                                <Tab icon={<BarChartIcon />} label="Other stuff" {...a11yProps(1)} />
-                                <Tab icon={<TrendingUpIcon /> } label="Stock Chart" {...a11yProps(2)} />
+                                <Tab icon={<TrendingUpIcon />} label="Stock Charts" {...a11yProps(1)} />
+                                <Tab icon={<CompareIcon /> } label="Comparison" {...a11yProps(2)} />
                             </Tabs>
                         </Box>
+                        
                         <TabPanel value={tabValue} index={0}>
                             {stockData}
                         </TabPanel>
                         <TabPanel value={tabValue} index={1}>
-                            Item Two
-                        </TabPanel>
-                        <TabPanel value={tabValue} index={2}>
                             {stockData}
                         </TabPanel>
+                        <TabPanel value={tabValue} index={2}>
+                            {checked}
+                            </TabPanel>
+                        
                     </Box>
                     
-                </AppBar>
-
-                <MuiDrawer variant='temporary' open={open} onClose={handleClose}>
-                    <Toolbar
-                        sx={{
-                            display: 'flex',
-                            alignItems: 'center',
-                            justifyContent: 'flex-end',
-                            px: [1],
-                        }}
-                    >
-                        <IconButton onClick={handleClose}>
-                            <ChevronLeftIcon />
-                        </IconButton>
-                    </Toolbar>
-                    <Divider />
-                    <List component="nav">
-                        <ListItem>
-                            <ListItemText primary="placeHolder"></ListItemText>
-                        </ListItem>
-                        {/* {mainListItems} */}
-                        <Divider sx={{ my: 1 }} />
-                        {/* {secondaryListItems} */}
-                    </List>
-                </MuiDrawer>
-                
+                </AppBar>                
             </Box>
         </ThemeProvider>
     );
 }
 
 //maintain a list of available stocks
-const stocks = [{id:1, name: 'AAPL', market: 'NASDAQ' },
-    { id: 2, name: '000123', market: 'SSE' },
-    { id: 3, name: 'A', market: 'SSE' },
-    { id: 4, name: 'B', market: 'SSE' },
-    { id: 5, name: 'C', market: 'SSE' }]
 
 export default function Dashboard() {
     return <DashboardContent />;

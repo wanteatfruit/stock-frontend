@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { useTheme } from '@mui/material/styles';
-import { Area, Line, XAxis, YAxis, Label, ResponsiveContainer, Tooltip, Brush, AreaChart,LineChart, CartesianGrid, Legend } from 'recharts';
-import { Card,CardContent, ButtonGroup, createTheme, Typography, Box, FormGroup, FormControlLabel, Switch } from '@mui/material';
+import { Area, Line, XAxis, YAxis, Label, ResponsiveContainer, Tooltip, Brush, AreaChart, LineChart, CartesianGrid, Legend } from 'recharts';
+import { Card, CardContent, ButtonGroup, createTheme, Typography, Box, FormGroup, FormControlLabel, Switch } from '@mui/material';
 import Stack from '@mui/material/Stack';
 import ToggleButton from '@mui/material/ToggleButton';
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
@@ -12,7 +12,7 @@ import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 
 
 
-export default function Chart({stock_data,stock_name}) {
+export default function Chart({ stock_data, stock_name }) {
     const chartTheme = createTheme({
         palette: {
             type: 'light',
@@ -92,13 +92,13 @@ export default function Chart({stock_data,stock_name}) {
         <React.Fragment>
             <Box
                 sx={{
-                    pl:3,
-                    margin:'0 auto'
+                    pl: 3,
+                    margin: '0 auto'
                 }}>
                 <Typography variant='h6'>{stock_name}</Typography>
 
-                </Box>
-            <Stack direction="row" spacing={1} sx={{pl:2}}>
+            </Box>
+            <Stack direction="row" spacing={1} sx={{ pl: 2 }}>
                 <ToggleButtonGroup
                     value={range}
                     exclusive
@@ -123,7 +123,7 @@ export default function Chart({stock_data,stock_name}) {
             </Stack>
             <ResponsiveContainer>
                 <LineChart
-                    data={changeData(range,stock_data)}
+                    data={changeData(range, stock_data)}
                     margin={{
                         top: 16,
                         right: 16,
@@ -145,7 +145,7 @@ export default function Chart({stock_data,stock_name}) {
                     </YAxis>
                     <Tooltip />
                     <Brush />
-                    <Legend  />
+                    <Legend />
                     <Line
                         isAnimationActive={true}
                         type="linear"
@@ -163,7 +163,7 @@ export default function Chart({stock_data,stock_name}) {
                     <Line
                         isAnimationActive={true}
                         type="linear"
-                        dataKey={show === true? "Predicted": ""}
+                        dataKey={show === true ? "Predicted" : ""}
                         stroke={chartTheme.palette.primary.secondary}
                         dot={false}
                     />
@@ -177,16 +177,8 @@ export default function Chart({stock_data,stock_name}) {
                         </CardContent>
                     </Card>
                 </LineChart>
-               
-            </ResponsiveContainer>
-            <Stack direction="row" spacing={1} sx={{ pl: 2 }}>
-                <FormGroup row >
-                    <FormControlLabel control={<Switch size='small' defaultChecked color={chartTheme.palette.primary.warning} onChange={handleOpenChange}></Switch>} label='Open' labelPlacement='bottom'></FormControlLabel>
-                    <FormControlLabel control={<Switch size='small' defaultChecked color={chartTheme.palette.primary.primary} onChange={handleCloseChange}></Switch>} label='Close' labelPlacement='bottom'></FormControlLabel>
-                    <FormControlLabel control={<Switch size='small' defaultChecked color="secondary" onChange={handleChange}></Switch>} label='Predictions (Open)' labelPlacement='bottom'></FormControlLabel>
 
-                </FormGroup>
-            </Stack>
+            </ResponsiveContainer>
 
 
         </React.Fragment>
