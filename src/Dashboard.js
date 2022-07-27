@@ -245,7 +245,7 @@ function DashboardContent() {
         // console.log(stockName)
         var url = new URL("http://127.0.0.1:8000/stocks")
         axios.get(url.href + '/' + stockName.name).then((res) => {
-            // console.log(res.data)
+            console.log(res)
             setData(res.data)
             console.log(checked)
             console.log(typeof stockData) //undefined

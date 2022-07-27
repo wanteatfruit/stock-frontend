@@ -8,13 +8,65 @@ import SChart from './Chart.js';
 import { Card, CardContent, Typography } from '@mui/material';
 import { Area, Line, XAxis, YAxis, Label, ResponsiveContainer, Tooltip, Brush, AreaChart, LineChart, CartesianGrid, Legend, BarChart, Bar, ComposedChart } from 'recharts';
 import { Chart } from "react-google-charts";
-
+import { Stack,ToggleButton,ToggleButtonGroup } from '@mui/material';
 
 export default function ChartTab({ stock_data, stock_name }) {
     const [candle_data, setCandle] = React.useState()
+
+
+    const options = {
+        animation: {
+            startup: 'true',
+        },
+        legend: 'none',
+        bar: { groupWidth: "100%" },
+        vAxis: {
+            viewWindowMode:'pretty'
+        },
+        hAxis: {
+            format: 'MMM d, y'
+        },
+        candlestick: {
+            fallingColor: { strokeWidth: 0, fill: "#a52714" }, // red
+            risingColor: { strokeWidth: 0, fill: "#0f9d58" }, // green
+        },
+    }
+
+    const [range, setRange] = React.useState('oneMonth');
+
+    const handleRange = (event, newRange) => {
+        if (newRange !== null) {
+            setRange(newRange)
+        }
+    }
+
+
     React.useEffect(() => {
-        var tmp=[["Date", "Low", "Open", "Close", "High"]]
-        for (let index = 1230; index < stock_data.length-8; index++) {
+        var tmp = [["Date", "Range", "Open", "Close", "High"]]
+        var idx;
+        switch (range) {
+            case 'oneWeek':
+                idx = stock_data.length-14
+                break;
+            case 'oneMonth':
+                idx = stock_data.length - 38
+                break;
+            case 'sixMonths':
+                idx = stock_data.length - 154
+                if (idx < 0) {
+                    idx=0
+                }
+                break;
+            case 'oneYear':
+                idx = stock_data.length - 255
+                if (idx < 0) {
+                    idx = 0
+                }
+                break;
+
+        }
+
+        for (let index = idx; index < stock_data.length - 7; index++) {
             const element = stock_data[index];
             var cur = []
             cur.push(element.Date)
@@ -27,25 +79,8 @@ export default function ChartTab({ stock_data, stock_name }) {
         }
         setCandle(tmp)
         console.log(stock_data)
-    },[stock_data])
+    }, [stock_data,range])
 
-    const options = {
-        animation: {
-            startup: 'true',
-        },
-        legend: 'none',
-        bar: { groupWidth: "100%" },
-        vAxis: {
-            viewWindowMode:'maximized'
-        },
-        hAxis: {
-            format: 'MMM d, y'
-        },
-        candlestick: {
-            fallingColor: { strokeWidth: 0, fill: "#a52714" }, // red
-            risingColor: { strokeWidth: 0, fill: "#0f9d58" }, // green
-        },
-    }
 
     return (
         <Box
@@ -80,14 +115,40 @@ export default function ChartTab({ stock_data, stock_name }) {
                             }}>
                             <Typography variant='h6'>Candlestick Chart</Typography>
                         </Box>
+                        <Stack direction="row" spacing={1} sx={{ pl: 2, }}>
+                            <ToggleButtonGroup
+                                value={range}
+                                exclusive
+                                onChange={handleRange}
+                                aria-label="time range"
+                                color='primary'
+                                sx={{ display: 'flex', }}
+                            >
+                                <ToggleButton value="oneYear" aria-label="left aligned" sx={{ height: 30 }}>
+                                    1Y
+                                </ToggleButton>
+                                <ToggleButton value="sixMonths" aria-label="centered" sx={{ height: 30 }}>
+                                    6M
+                                </ToggleButton>
+                                <ToggleButton value="oneMonth" aria-label="right aligned" sx={{ height: 30 }}>
+                                    1M
+                                </ToggleButton>
+                                <ToggleButton value="oneWeek" aria-label="right aligned" sx={{ height: 30 }}>
+                                    1W
+                                </ToggleButton>
+                            </ToggleButtonGroup>
+                        </Stack>
+
                         <Chart
                             chartType="CandlestickChart"
                             width="100%"
-                            height="400px"
+                            height='350px'
                             data={candle_data}
                             options={options}
+
                         />
                     </Paper>
+
                 </Grid>
                 <Grid item xs={12}>
                     <Paper
@@ -104,6 +165,7 @@ export default function ChartTab({ stock_data, stock_name }) {
                     >
                         <SChart stock_data={stock_data} stock_name={"Data Visualization"}> </SChart>
                     </Paper>
+                   
                 </Grid>
 
 
