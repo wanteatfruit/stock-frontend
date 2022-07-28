@@ -84,7 +84,7 @@ export const stocks = [{ id: 1, name: 'AAPL', market: 'DOW50' },
     { id: 53, name: 'BGGF_600019', market: 'SSE50' },
     { id: 54, name: 'ZGSH_600028', market: 'SSE50' },
     { id: 55, name: 'NFHK_600029', market: 'SSE50' },
-    { id: 56, name: 'ZXZQ_600031', market: 'SSE50' },
+    // { id: 56, name: 'ZXZQ_600031', market: 'SSE50' },
     { id: 57, name: 'ZSYH_600036', market: 'SSE50' },
     { id: 58, name: 'BLFZ_600048', market: 'SSE50' },
     { id: 59, name: 'ZGLT_600050', market: 'SSE50' },
@@ -298,7 +298,7 @@ function DashboardContent() {
                             value={stockName}
                             onChange={onValueChanged}
                             disableClearable
-                            blurOnSelect
+                            disableCloseOnSelect
                             renderInput={(params) => <TextField {...params}
                                 label="Choose one to view..."
                                 sx={{ width: 300 }}
